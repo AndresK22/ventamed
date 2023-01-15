@@ -4,7 +4,7 @@
 @section('content')
 
 @if (session('status'))
-< class="row">
+<div class="row">
     <div class="col s12">
         <div class="card light-green darken-1">
         <div class="card-content white-text">
@@ -21,40 +21,113 @@
 </div>
 
 <div class="row">
+    <div class="col s12 left-align">
+        <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-2">Crear medicamento</a>
+    </div>
+</div>
+
+<div class="row">
+    <form class="col s12" action="{{ route('medicamento.index') }}" method="GET">
+        @csrf
+        @method('get')
+        <div class="row">
+            <div class="input-field col s10">
+                <i class="material-icons prefix">search</i>
+                <input id="busquedaMedicamento" name="busquedaMedicamento" type="text" maxlength="255" value="{{ old('busquedaMedicamento') }}" class="validate">
+                <label for="busquedaMedicamento">Buscar por nombre</label>
+                @if ($errors->has('busquedaMedicamento'))
+                    @error('busquedaMedicamento')
+                        <span class="helper-text">{{ $message }}</span>
+                    @enderror    
+                @endif
+            </div>
+
+            <div class="input-field col s2 right-align">
+                <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
     <div class="col s12">
-        <table class="striped highlight responsive-table">
-            <thead>
+        <table class="striped highlight responsive-table centered">
+            <thead class="amber lighten-2">
                 <tr>
-                    <th>Name</th>
-                    <th>Item Name</th>
-                    <th>Item Price</th>
+                    <th>Corr.</th>
+                    <th>Nombre</th>
+                    <th>Cantidad disponible</th>
+                    <th>Precio</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>Alvin</td>
-                    <td>Eclair</td>
-                    <td>$0.87</td>
-                </tr>
-                <tr>
-                    <td>Alan</td>
-                    <td>Jellybean</td>
-                    <td>$3.76</td>
-                </tr>
-                <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                </tr>
+                @php
+                    $i = 1;
+                @endphp
+
+                @foreach ($medicamentos as $medicamento)
+                    <tr>
+                        <input id="idMed" name="idMed" type="hidden" value="{{ $medicamento->id }}">
+                        <input id="nomMed" name="nomMed" type="hidden" value="{{ $medicamento->nombreMedicamento }}">
+                        <td>{{ $i }}</td>
+                        <td>{{ $medicamento->nombreMedicamento }}</td>
+                        <td>{{ $medicamento->cantidadMedicamento }}</td>
+                        <td>${{ $medicamento->precioUnitario }}</td>
+                        <td>
+                            <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
+                            @role('administrador')
+                                <!-- <a href="{{ route('medicamento.destroy', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">delete</i></a> -->
+                                <a id="btnDeleteMedicamento" href="#modalDeleteMedicamento" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a>
+                            @endrole
+                        </td>
+                    </tr>
+
+                    @php
+                        $i++;
+                    @endphp
+
+                @endforeach
             </tbody>
         </table>
     </div>
 
 </div>
 
+{{ $medicamentos->links() }}
+
+<!-- Modal Structure -->
+<div id="modalDeleteMedicamento" class="modal">
+    <div class="modal-content">
+        <h4>Confirme la eliminaci&oacute;n</h4>
+        <p>¿Est&aacute; seguro que desea eliminar al medicamento "<span id="mosMed"></span>"?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat light-green lighten-1">Cancelar</a>
+        <form method="POST" action="" style="display: inline;">
+            @csrf
+            @method('GET')
+            <a class="waves-effect waves-green btn-flat red lighten-1" onclick="$(this).closest('form').submit();">Borrar</a>
+        </form>
+    </div>
+</div>
+
+@routes
 @section('js_user_page')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('click','#btnDeleteMedicamento', function(){
+            var idMed = $('#idMed').val();
+
+            var nomMed = $('#nomMed').val();
+            var mosMed = $('#mosMed');
+            mosMed.text(nomMed);
+
+            var modal = $('#modalDeleteMedicamento')
+            modal.find('form').attr('action', route('medicamento.destroy', idMed));
+        });
+    });
 </script>
 @endsection
 

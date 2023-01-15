@@ -41,7 +41,6 @@ class UserController extends Controller
                 }
             }
 
-            //$usuarios = User::where('id', '!=' , auth()->user()->id)->get();
             return view('user.index', compact('usuarios', 'usuariosaux'));
         }catch(Exception $e){
             return $e->getMessage();
@@ -140,11 +139,21 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $id, $idRol
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $idRol)
     {
-        //
+        try{
+            $rol = Role::findById($idRol);
+            
+            $user = User::find($id);
+            $user->removeRole($rol);
+            $user->delete();
+
+            return redirect()->route('user.index')->with('status', 'Usuario eliiminado con exito');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

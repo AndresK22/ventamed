@@ -45,6 +45,9 @@
                 @endphp
                 @foreach ($usuarios as $usuario)
                     <tr>
+                        <input id="idUs" name="idUs" type="hidden" value="{{ $usuario->id }}">
+                        <input id="idRo" name="idRo" type="hidden" value="{{ $usuario->rolId }}">
+                        <input id="nomUs" name="nomUs" type="hidden" value="{{ $usuario->name }}">
                         <td>{{ $usuario->id }}</td>
                         <td>{{ $usuario->name }}</td>
                         <td>{{ $usuario->email }}</td>
@@ -52,7 +55,8 @@
                         <td>
                             <a href="{{ route('user.edit', $usuario->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
                             @if ($usuariosaux[$i] != true)
-                                <a href="{{ route('user.destroy', $usuario->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">delete</i></a>
+                                <!-- <a href="{{ route('user.destroy', [$usuario->id, $usuario->rolId]) }}" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a> -->
+                                <a id="btnDeleteUser" href="#modalDeleteUser" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a>
                             @endif
                         </td>
                     </tr>
@@ -66,8 +70,39 @@
 
 </div>
 
+
+<!-- Modal Structure -->
+<div id="modalDeleteUser" class="modal">
+    <div class="modal-content">
+        <h4>Confirme la eliminaci&oacute;n</h4>
+        <p>¿Est&aacute; seguro que desea eliminar al usuario "<span id="mosUs"></span>"?</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat light-green lighten-1">Cancelar</a>
+        <form method="POST" action="" style="display: inline;">
+            @csrf
+            @method('GET')
+            <a class="waves-effect waves-green btn-flat red lighten-1" onclick="$(this).closest('form').submit();">Borrar</a>
+        </form>
+    </div>
+</div>
+
+@routes
 @section('js_user_page')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('click','#btnDeleteUser', function(){
+            var use = $('#idUs').val();
+            var ro = $('#idRo').val();
+
+            var nom = $('#nomUs').val();
+            var mosUs = $('#mosUs');
+            mosUs.text(nom);
+
+            var modal = $('#modalDeleteUser')
+            modal.find('form').attr('action', route('user.destroy', [use, ro]));
+        });
+    });
 </script>
 @endsection
 

@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('entrada_medicamentos', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('fechaEntrada');
+            $table->date('fechaEntrada')->nullable();
+            $table->string('proveedorEntrada', 255)->nullable();
             $table->decimal('montoEntrada', 5, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -35,6 +35,10 @@
 </div>
 @endif
 
+<div class="row white-text">
+    <p>.</p>
+    <p>.</p>
+</div>
 
 <div class="row">
     <div class="col s12 center-align">

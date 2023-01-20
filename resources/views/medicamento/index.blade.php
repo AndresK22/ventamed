@@ -31,9 +31,9 @@
         @csrf
         @method('get')
         <div class="row">
-            <div class="input-field col s10">
+            <div class="input-field col s5">
                 <i class="material-icons prefix">search</i>
-                <input id="busquedaMedicamento" name="busquedaMedicamento" type="text" maxlength="255" value="{{ old('busquedaMedicamento') }}" class="validate">
+                <input id="busquedaMedicamento" name="busquedaMedicamento" type="text" maxlength="255" value="{{ old('busquedaMedicamento') }}" autofocus class="validate">
                 <label for="busquedaMedicamento">Buscar por nombre</label>
                 @if ($errors->has('busquedaMedicamento'))
                     @error('busquedaMedicamento')
@@ -42,8 +42,19 @@
                 @endif
             </div>
 
+            <div class="input-field col s5">
+                <i class="material-icons prefix">search</i>
+                <input id="busquedaCodBarras" name="busquedaCodBarras" type="text" maxlength="25" value="{{ old('busquedaCodBarras') }}" class="validate">
+                <label for="busquedaCodBarras">Buscar por codigo de barras</label>
+                @if ($errors->has('busquedaCodBarras'))
+                    @error('busquedaCodBarras')
+                        <span class="helper-text">{{ $message }}</span>
+                    @enderror    
+                @endif
+            </div>
+            
             <div class="input-field col s2 right-align">
-                <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+                <button id="buscarMed" class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
             </div>
         </div>
     </form>
@@ -69,8 +80,6 @@
 
                 @foreach ($medicamentos as $medicamento)
                     <tr>
-                        <input id="idMed" name="idMed" type="hidden" value="{{ $medicamento->id }}">
-                        <input id="nomMed" name="nomMed" type="hidden" value="{{ $medicamento->nombreMedicamento }}">
                         <td>{{ $i }}</td>
                         <td>{{ $medicamento->nombreMedicamento }}</td>
                         <td>{{ $medicamento->cantidadMedicamento }}</td>
@@ -78,8 +87,7 @@
                         <td>
                             <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
                             @role('administrador')
-                                <!-- <a href="{{ route('medicamento.destroy', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">delete</i></a> -->
-                                <a id="btnDeleteMedicamento" href="#modalDeleteMedicamento" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a>
+                                <button data-target="modalDeleteMedicamento" class="btn modal-trigger waves-effect waves-light amber darken-2" onclick="borrarMed({{ $medicamento->id }}, '{{ $medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             @endrole
                         </td>
                     </tr>
@@ -116,16 +124,22 @@
 @routes
 @section('js_user_page')
 <script type="text/javascript">
-    $(document).ready(function() {
-        $(document).on('click','#btnDeleteMedicamento', function(){
-            var idMed = $('#idMed').val();
 
-            var nomMed = $('#nomMed').val();
+    var borrarMed;
+
+    $(document).ready(function() {
+        borrarMed = function(idMed, nomMed) {
+            /*var idMed = $('.idMed').val();
+            var nomMed = $('.nomMed').val();*/
             var mosMed = $('#mosMed');
             mosMed.text(nomMed);
 
             var modal = $('#modalDeleteMedicamento')
             modal.find('form').attr('action', route('medicamento.destroy', idMed));
+        };
+
+        $("#busquedaCodBarras").blur(function(){
+            $("#buscarMed").trigger("click");
         });
     });
 </script>

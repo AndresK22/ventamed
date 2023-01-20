@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AutController;
 use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\EntradaMedicamentoController;
+use App\Http\Controllers\DetalleEntradaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,11 +67,26 @@ Route::group(['middleware' => ['role:administrador|gerente']], function () {
 Route::get('entrada', [EntradaMedicamentoController::class, 'index'])->name('entrada.index')->middleware('auth');
 //Crear
 Route::get('entrada/create', [EntradaMedicamentoController::class, 'create'])->name('entrada.create')->middleware('auth');
-Route::post('entrada/store', [EntradaMedicamentoController::class,'store'])->name('entrada.store')->middleware('auth');
-//Route::post('entrada/store2', [EntradaMedicamentoController::class,'store2'])->name('entrada.store2')->middleware('auth');
+Route::get('entrada/create/{entrada}', [EntradaMedicamentoController::class, 'create2'])->name('entrada.create2')->middleware('auth');
+Route::put('entrada/store', [EntradaMedicamentoController::class,'store'])->name('entrada.store')->middleware('auth');
+//Buscar
+Route::post('entrada/buscMed', [EntradaMedicamentoController::class,'buscMed'])->name('entrada.buscMed')->middleware('auth');
+//Ver
+Route::get('entrada/show/{entrada}', [EntradaMedicamentoController::class, 'show'])->name('entrada.show')->middleware('auth');
 //Editar
-Route::get('entrada/edit/{medicamento}', [EntradaMedicamentoController::class, 'edit'])->name('entrada.edit')->middleware('auth');
-Route::put('entrada/update/{medicamento}', [EntradaMedicamentoController::class,'update'])->name('entrada.update')->middleware('auth');
-//Route::put('entrada/update2/{medicamento}', [EntradaMedicamentoController::class,'update2'])->name('entrada.update2')->middleware('auth');
+Route::get('entrada/edit/{entrada}', [EntradaMedicamentoController::class, 'edit'])->name('entrada.edit')->middleware('auth');
+Route::put('entrada/update/{entrada}', [EntradaMedicamentoController::class,'update'])->name('entrada.update')->middleware('auth');
+Route::get('entrada/update2/{entrada}', [EntradaMedicamentoController::class,'update2'])->name('entrada.update2')->middleware('auth');
 //Eliiminar
-Route::get('entrada/destroy/{medicamento}/', [EntradaMedicamentoController::class,'destroy'])->name('entrada.destroy')->middleware('auth');
+Route::get('entrada/destroy/{entrada}', [EntradaMedicamentoController::class,'destroy'])->name('entrada.destroy')->middleware('auth');
+
+//------------------------------------Detalle Entrada de medicamentos-------------------------------
+//Crear
+Route::post('detaEnt/store', [DetalleEntradaController::class,'store'])->name('detaEnt.store')->middleware('auth');
+Route::post('detaEnt/store2', [DetalleEntradaController::class,'store2'])->name('detaEnt.store2')->middleware('auth');
+//Editar
+Route::put('detaEnt/update/{entrada}/{detalle}', [DetalleEntradaController::class,'update'])->name('detaEnt.update')->middleware('auth');
+Route::put('detaEnt/update2/{entrada}/{detalle}', [DetalleEntradaController::class,'update2'])->name('detaEnt.update2')->middleware('auth');
+//Eliminar
+Route::get('detaEnt/destroy/{entrada}/{detalle}', [DetalleEntradaController::class,'destroy'])->name('detaEnt.destroy')->middleware('auth');
+Route::get('detaEnt/destroy2/{entrada}/{detalle}', [DetalleEntradaController::class,'destroy2'])->name('detaEnt.destroy2')->middleware('auth');

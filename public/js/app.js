@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.datepicker');
     var instances = M.Datepicker.init(elems, {
         'firstDay' : 1,
-        'format' : 'dd/mm/yyyy',
+        'format' : 'yyyy-mm-dd',
         'i18n': {
             'cancel' : 'Cancelar',
             'clear' : 'Limpiar',

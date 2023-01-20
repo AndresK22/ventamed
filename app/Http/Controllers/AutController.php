@@ -82,7 +82,7 @@ class AutController extends Controller
                 $request->session()->regenerate();
                 return redirect()->intended('dashboard')->with('status','Inicio de sesion correcto');
             }else{
-                return redirect()->route('login')->with('status','No se pudo iniciar la sesion');
+                return redirect()->route('dashboard')->with('status','No se pudo iniciar la sesion');
             }
         }catch(Exception $e){
             return $e->getMessage();

@@ -22,7 +22,7 @@
 
 <div class="row">
     <div class="col s12 left-align">
-        <a href="{{ route('entrada.create') }}" class="waves-effect waves-light btn-large amber darken-2">Ingresar entrada de medicamento</a>
+        <a href="{{ route('entrada.create', null) }}" class="waves-effect waves-light btn-large amber darken-2">Ingresar entrada de medicamento</a>
     </div>
 </div>
 
@@ -67,6 +67,7 @@
                 <tr>
                     <th>Corr.</th>
                     <th>Fecha</th>
+                    <th>Proveedor</th>
                     <th>Monto de la entrada</th>
                     <th>Acciones</th>
                 </tr>
@@ -79,16 +80,15 @@
 
                 @foreach ($entradas as $entrada)
                     <tr>
-                        <input id="idEn" name="idEn" type="hidden" value="{{ $entrada->id }}">
-                        <input id="feEn" name="feEn" type="hidden" value="{{ $entrada->fechaEntrada }}">
                         <td>{{ $i }}</td>
                         <td>{{ $entrada->fechaEntrada }}</td>
+                        <td>{{ $entrada->proveedorEntrada }}</td>
                         <td>{{ $entrada->montoEntrada }}</td>
                         <td>
+                            <a href="{{ route('entrada.show', $entrada->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a>
                             <a href="{{ route('entrada.edit', $entrada->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
                             @role('administrador')
-                                <!-- <a href="{{ route('entrada.destroy', $entrada->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">delete</i></a> -->
-                                <a id="btnDeleteEntrada" href="#modalDeleteEntrada" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a>
+                                <button data-target="modalDeleteEntrada" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarEnt({{ $entrada->id }}, '{{ $entrada->fechaEntrada }}')"><i class="material-icons">delete</i></button>
                             @endrole
                         </td>
                     </tr>
@@ -125,17 +125,18 @@
 @routes
 @section('js_user_page')
 <script type="text/javascript">
-    $(document).ready(function() {
-        $(document).on('click','#btnDeleteEntrada', function(){
-            var idEn = $('#idEn').val();
 
-            var feEn = $('#feEn').val();
+    var borrarEnt;
+
+    $(document).ready(function() {
+        //Funcion para eliminar una Entrada
+        borrarEnt = function(idEnt, fecha){
             var mosFe = $('#mosFe');
-            mosFe.text(feEn);
+            mosFe.text(fecha);
 
             var modal = $('#modalDeleteEntrada')
-            modal.find('form').attr('action', route('entrada.destroy', idMed));
-        });
+            modal.find('form').attr('action', route('entrada.destroy', idEnt));
+        };
     });
 </script>
 @endsection

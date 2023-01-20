@@ -1,5 +1,5 @@
 @extends('layout.indexDash')
-@section('title','Medicamentos')
+@section('title','Usuarios')
 
 @section('content')
 

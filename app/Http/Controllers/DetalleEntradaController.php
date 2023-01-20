@@ -3,82 +3,142 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\DetalleEntradaRequest;
+use App\Http\Requests\DetalleEntradaUpdateRequest;
+use App\Models\Medicamento;
+use App\Models\EntradaMedicamento;
+use App\Models\DetalleEntrada;
+use Exception;;
 
 class DetalleEntradaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DetalleEntradaRequest $request)
     {
-        //
+        try{
+            $detalleEntrada = new DetalleEntrada();
+            $detalleEntrada->entrada_medicamento_id = $request->entrada_id;
+            $detalleEntrada->medicamento_id = $request->medicamento_id;
+            $detalleEntrada->cantidadEntrada = $request->cantidadEntrada;
+            $detalleEntrada->precioEntrada = $request->precioEntrada;
+            $detalleEntrada->subEntrada = $request->precioEntrada * $request->cantidadEntrada;
+            $detalleEntrada->save();
+
+            $entrada = EntradaMedicamento::find($request->entrada_id);
+
+            return redirect()->route('entrada.create2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function store2(DetalleEntradaRequest $request)
     {
-        //
-    }
+        try{
+            $detalleEntrada = new DetalleEntrada();
+            $detalleEntrada->entrada_medicamento_id = $request->entrada_id;
+            $detalleEntrada->medicamento_id = $request->medicamento_id;
+            $detalleEntrada->cantidadEntrada = $request->cantidadEntrada;
+            $detalleEntrada->precioEntrada = $request->precioEntrada;
+            $detalleEntrada->subEntrada = $request->precioEntrada * $request->cantidadEntrada;
+            $detalleEntrada->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+            $entrada = EntradaMedicamento::find($request->entrada_id);
+
+            return redirect()->route('entrada.update2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  DetalleEntradaUpdateRequest  $request
+     * @param  EntradaMedicamento $entrada
+     * @param  int  $idDetEnt
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DetalleEntradaUpdateRequest $request, EntradaMedicamento $entrada, $idDetEnt)
     {
-        //
+        try{
+            $detalleEnt = DetalleEntrada::find($idDetEnt);
+            $detalleEnt->cantidadEntrada = $request->cantidadEntradaEdit;
+            $detalleEnt->precioEntrada = $request->precioEntradaEdit;
+            $detalleEnt->subEntrada = $request->precioEntradaEdit * $request->cantidadEntradaEdit;
+            $detalleEnt->save();
+
+            return redirect()->route('entrada.create2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function update2(DetalleEntradaUpdateRequest $request, EntradaMedicamento $entrada, $idDetEnt)
+    {
+        try{
+            $detalleEnt = DetalleEntrada::find($idDetEnt);
+            $detalleEnt->cantidadEntrada = $request->cantidadEntradaEdit;
+            $detalleEnt->precioEntrada = $request->precioEntradaEdit;
+            $detalleEnt->subEntrada = $request->precioEntradaEdit * $request->cantidadEntradaEdit;
+            $detalleEnt->save();
+
+            return redirect()->route('entrada.update2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  EntradaMedicamento $entrada
+     * @param  int  $detalleEntrada
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(EntradaMedicamento $entrada, $detalleEntrada)
     {
-        //
+        try{
+            $detalleEnt = DetalleEntrada::find($detalleEntrada);
+            $detalleEnt->delete();
+
+            return redirect()->route('entrada.create2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function destroy2(EntradaMedicamento $entrada, $detalleEntrada)
+    {
+        try{
+            $detallesOrig = session('detallesOrig');
+            $detalleEnt = DetalleEntrada::find($detalleEntrada);
+            //dd($detallesOrig);
+            $i = 0;
+            foreach ($detallesOrig as $detalle) {
+
+                if($detalleEnt->id == $detalle->id){
+                    $detallesOrig->pull($i);
+
+                    $medicamento = Medicamento::find($detalle->medicamento_id);
+                    $medicamento->cantidadMedicamento = $medicamento->cantidadMedicamento - $detalle->cantidadEntrada;
+                    $medicamento->save();
+                }
+                $i++;
+            }
+
+            $detalleEnt->delete();
+            session()->forget('detallesOrig');
+            session(['detallesOrig' => $detallesOrig]);
+
+            return redirect()->route('entrada.update2', $entrada);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

@@ -16,11 +16,11 @@ class Medicamento extends Model
         'precioUnitario'
     ];
 
-    public function detalleEntradas()
+    public function detalleEntrada()
     {
         return $this->hasMany(DetalleEntrada::class);
     }
-    public function detalleSalidas()
+    public function detalleSalida()
     {
         return $this->hasMany(DetalleSalida::class);
     }
@@ -29,6 +29,11 @@ class Medicamento extends Model
     public function scopeNombreMedicamento($query, $nombreMedicamento){
         if($nombreMedicamento){
             return $query->where('nombreMedicamento', 'like', "%$nombreMedicamento%");
+        }
+    }
+    public function scopeCodBarras($query, $codBarras){
+        if($codBarras){
+            return $query->where('codBarras', '=', "$codBarras");
         }
     }
 }

@@ -14,7 +14,7 @@ class SalidaMedicamento extends Model
         'montoSalida'
     ];
 
-    public function detalleSalidas()
+    public function detalleSalida()
     {
         return $this->hasMany(DetalleSalida::class);
     }

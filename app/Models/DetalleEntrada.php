@@ -10,19 +10,18 @@ class DetalleEntrada extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = [
-        'entrada_id',
-        'medicamento_id',
         'cantidadEntrada',
         'precioEntrada',
         'subEntrada'
     ];
 
-    public function medicamentos()
-    {
-        return $this->belongsTo(Medicamento::class);
-    }
-    public function entradaMedicamentos()
+    public function entradaMedicamento()
     {
         return $this->belongsTo(EntradaMedicamento::class);
+    }
+
+    public function medicamento()
+    {
+        return $this->belongsTo(Medicamento::class);
     }
 }

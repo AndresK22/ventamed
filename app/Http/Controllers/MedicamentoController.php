@@ -19,9 +19,11 @@ class MedicamentoController extends Controller
     {
         try{
             $nombreMedicamento = $request->busquedaMedicamento;
+            $codBarras = $request->busquedaCodBarras;
 
             $medicamentos = Medicamento::orderBy('nombreMedicamento', 'asc')
             ->nombreMedicamento($nombreMedicamento)
+            ->codBarras($codBarras)
             ->paginate(20);
 
             return view('medicamento.index', compact('medicamentos'));
@@ -153,7 +155,7 @@ class MedicamentoController extends Controller
     {
         try{
             $medicamento->delete();
-            return redirect()->route('medicamento.index')->with('status', 'Medicamento eliiminado con exito');
+            return redirect()->route('medicamento.index')->with('status', 'Medicamento eliminado con exito');
         }catch(Exception $e){
             return $e->getMessage();
         }

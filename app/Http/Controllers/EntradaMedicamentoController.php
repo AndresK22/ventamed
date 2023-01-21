@@ -229,4 +229,17 @@ class EntradaMedicamentoController extends Controller
         $entrada->delete();
         return redirect()->route('entrada.index')->with('status','Entrada eliminada correctamente');
     }
+
+    public function destroy2(EntradaMedicamento $entrada)
+    {
+        $detalles = DetalleEntrada::where('entrada_medicamento_id', '=', $entrada->id)->get();
+        if($detalles != null){
+            foreach($detalles as $detalle){
+                $detalle->delete();
+            }
+        }
+
+        $entrada->delete();
+        return redirect()->route('entrada.index')->with('status','Ha salido de la entrada de medicamentos');
+    }
 }

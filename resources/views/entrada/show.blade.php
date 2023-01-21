@@ -31,40 +31,35 @@
 </div>
 
 <div class="row">
-    <div class="col s12">
-        <form class="col s12" action="" method="POST">
-            @csrf
-            @method('put')
-            
+    <div class="col s12">           
+        <div class="input-field col s6">
+            <i class="material-icons prefix">local_shipping</i>
+            <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada', $entrada->proveedorEntrada) }}" disabled required>
+            <label for="proveedorEntrada">Proveedor</label>
+        </div>
+        @if ($detalles)
+            @php
+                $total = 0;
+                foreach ($detalles as $detalle) {
+                    $total += $detalle->subEntrada;
+                }
+            @endphp
+
             <div class="input-field col s6">
-                <i class="material-icons prefix">local_shipping</i>
-                <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada', $entrada->proveedorEntrada) }}" disabled required>
-                <label for="proveedorEntrada">Proveedor</label>
+                <i class="material-icons prefix">attach_money</i>
+                <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
+                <label for="montoEntrad">Total</label>
+                @if ($errors->has('montoEntrad'))
+                    @error('montoEntrad')
+                        <span class="helper-text">{{ $message }}</span>
+                    @enderror    
+                @endif
             </div>
-            @if ($detalles)
-                @php
-                    $total = 0;
-                    foreach ($detalles as $detalle) {
-                        $total += $detalle->subEntrada;
-                    }
-                @endphp
+            <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
+        @endif
 
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">attach_money</i>
-                    <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
-                    <label for="montoEntrad">Total</label>
-                    @if ($errors->has('montoEntrad'))
-                        @error('montoEntrad')
-                            <span class="helper-text">{{ $message }}</span>
-                        @enderror    
-                    @endif
-                </div>
-                <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
-            @endif
+        <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
 
-            <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
-            
-        </form>
     </div>
 </div>
 

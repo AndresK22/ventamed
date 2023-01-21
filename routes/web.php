@@ -79,6 +79,7 @@ Route::put('entrada/update/{entrada}', [EntradaMedicamentoController::class,'upd
 Route::get('entrada/update2/{entrada}', [EntradaMedicamentoController::class,'update2'])->name('entrada.update2')->middleware('auth');
 //Eliiminar
 Route::get('entrada/destroy/{entrada}', [EntradaMedicamentoController::class,'destroy'])->name('entrada.destroy')->middleware('auth');
+Route::get('entrada/destroy2/{entrada}', [EntradaMedicamentoController::class,'destroy2'])->name('entrada.destroy2')->middleware('auth');
 
 //------------------------------------Detalle Entrada de medicamentos-------------------------------
 //Crear

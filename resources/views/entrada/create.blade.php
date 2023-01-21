@@ -20,7 +20,7 @@
 
 <div class="row">
     <div class="col s12 left-align">
-        <a href="{{ route('entrada.index') }}" class="waves-effect waves-light btn-flat"><i class="material-icons left">arrow_back</i>Ver registros de entradas</a>
+        <button data-target="modalSalir" class="waves-effect waves-light btn-flat modal-trigger" onclick="salir({{ $entrada->id }})"><i class="material-icons left">arrow_back</i>Ver registros de entradas</button>
     </div>
 </div>
 
@@ -28,6 +28,70 @@
     <div class="col s12 center-align">
         <h3>Ingresar entrada de medicamento</h3>
     </div>
+</div>
+
+<div class="row">
+    <div class="col s12">
+        <form action="{{ route('entrada.store') }}" method="POST">
+        
+            @csrf
+            @method('put')
+            
+            <div class="input-field col s4">
+                <i class="material-icons prefix">local_shipping</i>
+                <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada') }}" class="validate" required>
+                <label for="proveedorEntrada">Proveedor</label>
+                @if ($errors->has('proveedorEntrada'))
+                    @error('proveedorEntrada')
+                        <span class="helper-text">{{ $message }}</span>
+                    @enderror    
+                @endif
+            </div>
+            @if ($detalles)
+                @php
+                    $total = 0;
+                    foreach ($detalles as $detalle) {
+                        $total += $detalle->subEntrada;
+                    }
+                @endphp
+
+                <div class="input-field col s4">
+                    <i class="material-icons prefix">attach_money</i>
+                    <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
+                    <label for="montoEntrad">Total</label>
+                    @if ($errors->has('montoEntrad'))
+                        @error('montoEntrad')
+                            <span class="helper-text">{{ $message }}</span>
+                        @enderror    
+                    @endif
+                </div>
+                <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
+            @endif
+
+            <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
+            @php
+                $j = 0;
+            @endphp
+            @if ($detalles)
+                @foreach ($detalles as $detalle)
+                    <input name="detalles[{{ $j }}][idMed]" value="{{ $detalle->medicamento_id }}" hidden>
+                    <input name="detalles[{{ $j }}][cantidadEntrada]" value="{{ $detalle->cantidadEntrada }}" hidden>
+                    @php
+                        $j++;
+                    @endphp
+                @endforeach
+            @endif
+            
+            <div class="input-field col s4">
+                <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar entrada</button>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<div class="row white-text">
+    <p>.</p>
 </div>
 
 <div class="row">
@@ -143,69 +207,6 @@
 
 </div>
 
-<div class="row">
-    <div class="col s8">
-        <form class="col s12" action="{{ route('entrada.store') }}" method="POST">
-        
-            @csrf
-            @method('put')
-            
-            <div class="input-field col s6">
-                <i class="material-icons prefix">local_shipping</i>
-                <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada') }}" class="validate" required>
-                <label for="proveedorEntrada">Proveedor</label>
-                @if ($errors->has('proveedorEntrada'))
-                    @error('proveedorEntrada')
-                        <span class="helper-text">{{ $message }}</span>
-                    @enderror    
-                @endif
-            </div>
-            @if ($detalles)
-                @php
-                    $total = 0;
-                    foreach ($detalles as $detalle) {
-                        $total += $detalle->subEntrada;
-                    }
-                @endphp
-
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">attach_money</i>
-                    <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
-                    <label for="montoEntrad">Total</label>
-                    @if ($errors->has('montoEntrad'))
-                        @error('montoEntrad')
-                            <span class="helper-text">{{ $message }}</span>
-                        @enderror    
-                    @endif
-                </div>
-                <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
-            @endif
-
-            <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
-            @php
-                $j = 0;
-            @endphp
-            @if ($detalles)
-                @foreach ($detalles as $detalle)
-                    <input name="detalles[{{ $j }}][idMed]" value="{{ $detalle->medicamento_id }}" hidden>
-                    <input name="detalles[{{ $j }}][cantidadEntrada]" value="{{ $detalle->cantidadEntrada }}" hidden>
-                    @php
-                        $j++;
-                    @endphp
-                @endforeach
-            @endif
-            
-            <div class="row">
-                <div class="input-field col s12 center-align">
-                    <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar entrada</button>
-                </div>
-            </div>
-            
-        </form>
-    </div>
-
-</div>
-
 <!-- Modal Structure -->
 <div id="modalDeleteDetalleEn" class="modal">
     <div class="modal-content">
@@ -221,7 +222,6 @@
         </form>
     </div>
 </div>
-
 
 <div id="modalEditDetEnt" class="modal">
     <div class="modal-content">
@@ -261,6 +261,20 @@
     </div>
 </div>
 
+<div id="modalSalir" class="modal">
+    <div class="modal-content">
+        <h4>¿Est&aacute; seguro que desea salir?</h4>
+        <p>Si sale, se elminaran todos los cambios realizados</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat light-green lighten-1">Cancelar</a>
+        <form method="POST" action="" style="display: inline;">
+            @csrf
+            @method('GET')
+            <a class="waves-effect waves-green btn-flat red lighten-1" onclick="$(this).closest('form').submit();">Salir</a>
+        </form>
+    </div>
+</div>
 
 @routes()
 @section('js_user_page')
@@ -270,6 +284,12 @@
     var editarDetEn;
 
     $(document).ready(function() {
+
+        //Funcion para salir sin guardar cambios
+        salir = function(idEn){
+            var modal = $('#modalSalir')
+            modal.find('form').attr('action', route('entrada.destroy2', idEn));
+        };
 
         //Funcion para eliminar un detalle de Entrada
         borrarDetEn = function(idEn, idDetEn, nomEnDet){

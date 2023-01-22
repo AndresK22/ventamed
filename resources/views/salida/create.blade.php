@@ -47,7 +47,7 @@
 
                 <div class="input-field col s4">
                     <i class="material-icons prefix">attach_money</i>
-                    <input id="montoSalid" name="montoSalid" type="text" value="${{ $total }}" class="validate" disabled required>
+                    <input id="montoSalid" name="montoSalid" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
                     <label for="montoSalid">Total</label>
                     @if ($errors->has('montoSalid'))
                         @error('montoSalid')
@@ -66,6 +66,8 @@
                 @foreach ($detalles as $detalle)
                     <input name="detalles[{{ $j }}][idMed]" value="{{ $detalle->medicamento_id }}" hidden>
                     <input name="detalles[{{ $j }}][cantidadSalida]" value="{{ $detalle->cantidadSalida }}" hidden>
+                    <input name="detalles[{{ $j }}][precioSalida]" value="{{ $detalle->precioSalida }}" hidden>
+                    <input name="detalles[{{ $j }}][subSalida]" value="{{ $detalle->subSalida }}" hidden>
                     @php
                         $j++;
                     @endphp
@@ -112,7 +114,7 @@
                             <td>${{ $detalle->precioSalida }}</td>
                             <td>${{ $detalle->subSalida }}</td>
                             <td>
-                                <button data-target="modalEditDetSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadSalida }}, {{ $detalle->precioSalida }})"><i class="material-icons">edit</i></button>
+                                <button data-target="modalEditDetSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadSalida }}, {{ $detalle->precioSalida }}, {{ $detalle->medicamento_id }})"><i class="material-icons">edit</i></button>
                                 <button data-target="modalDeleteDetalleSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             </td>
                         </tr>
@@ -223,6 +225,7 @@
             <input id='idDet' name="idDet" type="number" min="1" step="1" hidden>
 
             <input id="precioSalidaEdit" name="precioSalidaEdit" type="number" min="0.01" max="999.99" step="0.01" class="validate" hidden required>
+            <input id="medicamentoIdEdit" name="medicamentoIdEdit" type="number" min="1" step="1" class="validate" hidden required>
             
             <div class="row">
                 <div class="input-field col s12">
@@ -284,13 +287,15 @@
         };
 
         //Funcion para editar un detalle de entrada
-        editarDetSal = function(idSal, idDetSal, nomSalDet, cantDet, precSal){
+        editarDetSal = function(idSal, idDetSal, nomSalDet, cantDet, precSal, idMed){
             var cantidad = $('#cantidadSalidaEdit');
             var precio = $('#precioSalidaEdit');
+            var medicamento = $('#medicamentoIdEdit');
             var idDet = $('#idDet');
 
             cantidad.val(cantDet);
             precio.val(precSal);
+            medicamento.val(idMed);
             idDet.val(idDetSal);
 
             var mosNom = $('#mosNomEdit');

@@ -47,7 +47,7 @@
 
             <div class="input-field col s6">
                 <i class="material-icons prefix">attach_money</i>
-                <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
+                <input id="montoEntrad" name="montoEntrad" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
                 <label for="montoEntrad">Total</label>
                 @if ($errors->has('montoEntrad'))
                     @error('montoEntrad')

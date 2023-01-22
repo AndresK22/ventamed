@@ -8,7 +8,6 @@ use App\Http\Controllers\EntradaMedicamentoController;
 use App\Http\Controllers\DetalleEntradaController;
 use App\Http\Controllers\SalidaMedicamentoController;
 use App\Http\Controllers\DetalleSalidaController;
-use App\Models\SalidaMedicamento;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,7 +79,7 @@ Route::get('entrada/show/{entrada}', [EntradaMedicamentoController::class, 'show
 Route::get('entrada/edit/{entrada}', [EntradaMedicamentoController::class, 'edit'])->name('entrada.edit')->middleware('auth');
 Route::put('entrada/update/{entrada}', [EntradaMedicamentoController::class,'update'])->name('entrada.update')->middleware('auth');
 Route::get('entrada/update2/{entrada}', [EntradaMedicamentoController::class,'update2'])->name('entrada.update2')->middleware('auth');
-//Eliiminar
+//Eliminar
 Route::get('entrada/destroy/{entrada}', [EntradaMedicamentoController::class,'destroy'])->name('entrada.destroy')->middleware('auth');
 Route::get('entrada/destroy2/{entrada}', [EntradaMedicamentoController::class,'destroy2'])->name('entrada.destroy2')->middleware('auth');
 
@@ -111,10 +110,11 @@ Route::get('salida/show/{salida}', [SalidaMedicamentoController::class, 'show'])
 Route::get('salida/edit/{salida}', [SalidaMedicamentoController::class, 'edit'])->name('salida.edit')->middleware('auth');
 Route::get('salida/edit2/{salida}', [SalidaMedicamentoController::class,'edit2'])->name('salida.edit2')->middleware('auth');
 Route::put('salida/update/{salida}', [SalidaMedicamentoController::class,'update'])->name('salida.update')->middleware('auth');
-
-//Eliiminar
+//Eliminar
 Route::get('salida/destroy/{salida}', [SalidaMedicamentoController::class,'destroy'])->name('salida.destroy')->middleware('auth');
 Route::get('salida/destroy2/{salida}', [SalidaMedicamentoController::class,'destroy2'])->name('salida.destroy2')->middleware('auth');
+//Imprimir
+Route::get('salida/imp/{salida}', [SalidaMedicamentoController::class,'imp'])->name('salida.imp')->middleware('auth');
 
 //------------------------------------Detalle Salida de medicamentos-------------------------------
 //Crear

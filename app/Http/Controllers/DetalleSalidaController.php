@@ -21,17 +21,25 @@ class DetalleSalidaController extends Controller
     public function store(Request $request)
     {
         try{
-            $detalleSalida = new DetalleSalida();
-            $detalleSalida->salida_medicamento_id = $request->salida_id;
-            $detalleSalida->medicamento_id = $request->medicamento_id;
-            $detalleSalida->cantidadSalida = $request->cantidadSalida;
-            $detalleSalida->precioSalida = $request->precioSalida;
-            $detalleSalida->subSalida = $request->precioSalida * $request->cantidadSalida;
-            $detalleSalida->save();
+            $medicamento = Medicamento::find($request->medicamento_id);
 
-            $salida = SalidaMedicamento::find($request->salida_id);
+            if($medicamento->cantidadMedicamento < $request->cantidadSalida){
+                $salida = SalidaMedicamento::find($request->salida_id);
+                return redirect()->route('salida.create2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                
+            }else{
+                $detalleSalida = new DetalleSalida();
+                $detalleSalida->salida_medicamento_id = $request->salida_id;
+                $detalleSalida->medicamento_id = $request->medicamento_id;
+                $detalleSalida->cantidadSalida = $request->cantidadSalida;
+                $detalleSalida->precioSalida = $request->precioSalida;
+                $detalleSalida->subSalida = $request->precioSalida * $request->cantidadSalida;
+                $detalleSalida->save();
 
-            return redirect()->route('salida.create2', $salida);
+                $salida = SalidaMedicamento::find($request->salida_id);
+
+                return redirect()->route('salida.create2', $salida);
+            }
         }catch(Exception $e){
             return $e->getMessage();
         }
@@ -40,17 +48,25 @@ class DetalleSalidaController extends Controller
     public function store2(DetalleSalidaRequest $request)
     {
         try{
-            $detalleSalida = new DetalleSalida();
-            $detalleSalida->salida_medicamento_id = $request->salida_id;
-            $detalleSalida->medicamento_id = $request->medicamento_id;
-            $detalleSalida->cantidadSalida = $request->cantidadSalida;
-            $detalleSalida->precioSalida = $request->precioSalida;
-            $detalleSalida->subSalida = $request->precioSalida * $request->cantidadSalida;
-            $detalleSalida->save();
+            $medicamento = Medicamento::find($request->medicamento_id);
 
-            $salida = SalidaMedicamento::find($request->salida_id);
+            if($medicamento->cantidadMedicamento < $request->cantidadSalida){
+                $salida = SalidaMedicamento::find($request->salida_id);
+                return redirect()->route('salida.edit2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                
+            }else{
+                $detalleSalida = new DetalleSalida();
+                $detalleSalida->salida_medicamento_id = $request->salida_id;
+                $detalleSalida->medicamento_id = $request->medicamento_id;
+                $detalleSalida->cantidadSalida = $request->cantidadSalida;
+                $detalleSalida->precioSalida = $request->precioSalida;
+                $detalleSalida->subSalida = $request->precioSalida * $request->cantidadSalida;
+                $detalleSalida->save();
 
-            return redirect()->route('salida.edit2', $salida);
+                $salida = SalidaMedicamento::find($request->salida_id);
+
+                return redirect()->route('salida.edit2', $salida);
+            }
         }catch(Exception $e){
             return $e->getMessage();
         }
@@ -66,12 +82,19 @@ class DetalleSalidaController extends Controller
     public function update(DetalleSalidaUpdateRequest $request, SalidaMedicamento $salida, $idDetSal)
     {
         try{
-            $detalleSal = DetalleSalida::find($idDetSal);
-            $detalleSal->cantidadSalida = $request->cantidadSalidaEdit;
-            $detalleSal->subSalida = $request->precioSalidaEdit * $request->cantidadSalidaEdit;
-            $detalleSal->save();
+            $medicamento = Medicamento::find($request->medicamentoIdEdit);
 
-            return redirect()->route('salida.create2', $salida);
+            if($medicamento->cantidadMedicamento < $request->cantidadSalidaEdit){
+                return redirect()->route('salida.create2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                
+            }else{
+                $detalleSal = DetalleSalida::find($idDetSal);
+                $detalleSal->cantidadSalida = $request->cantidadSalidaEdit;
+                $detalleSal->subSalida = $request->precioSalidaEdit * $request->cantidadSalidaEdit;
+                $detalleSal->save();
+
+                return redirect()->route('salida.create2', $salida);
+            }
         }catch(Exception $e){
             return $e->getMessage();
         }
@@ -80,13 +103,20 @@ class DetalleSalidaController extends Controller
     public function update2(DetalleSalidaUpdateRequest $request, SalidaMedicamento $salida, $idDetSal)
     {
         try{
-            $detalleSal = DetalleSalida::find($idDetSal);
-            $detalleSal->cantidadSalida = $request->cantidadSalidaEdit;
-            $detalleSal->precioSalida = $request->precioSalidaEdit;
-            $detalleSal->subSalida = $request->precioSalidaEdit * $request->cantidadSalidaEdit;
-            $detalleSal->save();
+            $medicamento = Medicamento::find($request->medicamentoIdEdit);
 
-            return redirect()->route('salida.edit2', $salida);
+            if($medicamento->cantidadMedicamento < $request->cantidadSalidaEdit){
+                return redirect()->route('salida.edit2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                
+            }else{
+                $detalleSal = DetalleSalida::find($idDetSal);
+                $detalleSal->cantidadSalida = $request->cantidadSalidaEdit;
+                $detalleSal->precioSalida = $request->precioSalidaEdit;
+                $detalleSal->subSalida = $request->precioSalidaEdit * $request->cantidadSalidaEdit;
+                $detalleSal->save();
+
+                return redirect()->route('salida.edit2', $salida);
+            }
         }catch(Exception $e){
             return $e->getMessage();
         }

@@ -7,7 +7,12 @@ use App\Http\Requests\SalidaRequest;
 use App\Models\SalidaMedicamento;
 use App\Models\DetalleSalida;
 use App\Models\Medicamento;
+use Illuminate\Pagination\Paginator;
 use Exception;
+
+require __DIR__ . '../../../../vendor/autoload.php';
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
 
 class SalidaMedicamentoController extends Controller
 {
@@ -32,7 +37,7 @@ class SalidaMedicamentoController extends Controller
                 ->orderBy('horaSalida', 'desc')
                 ->fechaSalida1($fecha1)
                 ->paginate(20);
-            }           
+            }
 
             return view('salida.index', compact('salidas'));
         }catch(Exception $e){
@@ -109,6 +114,43 @@ class SalidaMedicamentoController extends Controller
             $salida->horaSalida = $hora;
             $salida->montoSalida = $request->montoSalida;
             $salida->save();
+
+            //Imprimir ticket
+            $connector = new WindowsPrintConnector("POS-58");
+            $printer = new Printer($connector);
+            //Encabezado
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Venta de medicina popular\n");
+            $printer->text("'Don Evelio'\n");
+            $printer->text("Col. 10 de Mayo, final Calle\n");
+            $printer->text("Central, Mejicanos\n");
+            $printer->text("Telefono: 6933-3429\n");
+            $printer->text($fecha . " " . $hora . "\n");
+            $printer->feed(2);
+            //Encabezado "tabla"
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("CANT      P.U.      SUB.\n");
+            $printer->feed(1);
+            //Productos
+            foreach ($detalles as $detalle) {
+                $medicamento = Medicamento::find($detalle['idMed']);
+
+                $printer->text($medicamento->nombreMedicamento . "\n");
+                $printer->text(" " . $detalle['cantidadSalida'] . "      $" . $detalle['precioSalida'] . "     $" . $detalle['subSalida'] . "\n");
+            }
+            //Total
+            $printer->feed(1);
+            $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->text("TOTAL: $" . number_format($request->montoSalida, 2) . "\n");
+            //Pie de pagina
+            $printer->feed(2);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Gracias por su compra");
+            //Final
+            $printer->feed(5);
+            $printer->cut();
+            //$printer->pulse();
+            $printer->close();
 
             return redirect()->route('salida.index')->with('status','Salida ingresada correctamente');
         } catch (Exception $e) {
@@ -246,6 +288,54 @@ class SalidaMedicamentoController extends Controller
 
             $salida->delete();
             return redirect()->route('salida.index')->with('status','Ha salido de la venta de medicamentos');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function imp(SalidaMedicamento $salida)
+    {
+        try{
+            $detalles = DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get();
+
+            //Imprimir ticket
+            $connector = new WindowsPrintConnector("POS-58");
+            $printer = new Printer($connector);
+            //Encabezado
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Venta de medicina popular\n");
+            $printer->text("'Don Evelio'\n");
+            $printer->text("Col. 10 de Mayo, final Calle\n");
+            $printer->text("Central, Mejicanos\n");
+            $printer->text("Telefono: 6933-3429\n");
+            $printer->text($salida->fechaSalida . " " . $salida->horaSalida . "\n");
+            $printer->feed(2);
+            //Encabezado "tabla"
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("CANT      P.U.      SUB.\n");
+            $printer->feed(1);
+            //Productos
+            foreach ($detalles as $detalle) {
+                $medicamento = Medicamento::find($detalle->medicamento_id);
+
+                $printer->text($medicamento->nombreMedicamento . "\n");
+                $printer->text(" " . $detalle->cantidadSalida . "      $" . $detalle->precioSalida . "     $" . $detalle->subSalida . "\n");
+            }
+            //Total
+            $printer->feed(1);
+            $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->text("TOTAL: $" . number_format($salida->montoSalida, 2) . "\n");
+            //Pie de pagina
+            $printer->feed(2);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Gracias por su compra");
+            //Final
+            $printer->feed(5);
+            $printer->cut();
+            //$printer->pulse();
+            $printer->close();
+
+            return redirect()->route('salida.index');
         }catch(Exception $e){
             return $e->getMessage();
         }

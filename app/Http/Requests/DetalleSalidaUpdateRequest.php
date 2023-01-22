@@ -26,6 +26,7 @@ class DetalleSalidaUpdateRequest extends FormRequest
         return [
             'idDet' => 'required|integer',
             'cantidadSalidaEdit' => 'required|integer',
+            'medicamentoIdEdit' => 'required|integer',
             'precioSalidaEdit' => 'required|numeric|between:0.01,999.99'
         ];
     }

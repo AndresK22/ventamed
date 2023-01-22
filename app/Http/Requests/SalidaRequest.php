@@ -26,6 +26,8 @@ class SalidaRequest extends FormRequest
         return [
             'salida_id' => 'integer',
             'fechaSalida' => 'date',
+            'precioSalida' => 'numeric|between:0.01,999.99',
+            'subSalida' => 'numeric|between:0.01,999.99',
             'montoSalida' => 'numeric|between:0.01,999.99'
         ];
     }

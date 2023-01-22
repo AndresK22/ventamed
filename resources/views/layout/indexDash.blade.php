@@ -51,8 +51,8 @@
             <li class="{{ request()->routeIs('medicamento.*') ? 'active': '' }}"><a class="waves-effect" href="{{ route('medicamento.index') }}"><i class="material-icons">local_hospital</i>Medicamentos</a></li>
         @endhasanyrole
 
-        <li class="{{ request()->routeIs('entrada.*') ? 'active': '' }}"><a class="waves-effect" href="{{ route('entrada.index') }}" class="{{ request()->routeIs('entrada.index') ? 'active': '' }}"><i class="material-icons">local_shipping</i>Entrada de medicamentos</a></li>
-        <li class="{{ request()->routeIs('salida.*') ? 'active': '' }}"><a class="waves-effect" href="#!"><i class="material-icons">attach_money</i>Salida de medicamentos</a></li>
+        <li class="{{ request()->routeIs('entrada.*') ? 'active': '' }}"><a class="waves-effect" href="{{ route('entrada.create') }}"><i class="material-icons">local_shipping</i>Entrada de medicamentos</a></li>
+        <li class="{{ request()->routeIs('salida.*') ? 'active': '' }}"><a class="waves-effect" href="{{ route('salida.index') }}"><i class="material-icons">attach_money</i>Salida de medicamentos</a></li>
         
         @hasanyrole('administrador')
             <li class="{{ request()->routeIs('control.*') ? 'active': '' }}"><a class="waves-effect" href="#!"><i class="material-icons">assignment</i>Control mensual</a></li>

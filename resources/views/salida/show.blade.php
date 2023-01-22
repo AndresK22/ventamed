@@ -1,5 +1,5 @@
 @extends('layout.indexDash')
-@section('title','Ver entrada')
+@section('title','Ver salida')
 
 @section('content')
 
@@ -20,45 +20,38 @@
 
 <div class="row">
     <div class="col s12 left-align">
-        <a href="{{ route('entrada.index') }}" class="waves-effect waves-light btn-flat"><i class="material-icons left">arrow_back</i>Ver registros de entradas</a>
+        <a href="{{ route('salida.index') }}" class="waves-effect waves-light btn-flat"><i class="material-icons left">arrow_back</i>Ver registros de salidas</a>
     </div>
 </div>
 
 <div class="row">
     <div class="col s12 center-align">
-        <h3>Revisar entrada de medicamento</h3>
+        <h3>Revisar salida de medicamento</h3>
     </div>
 </div>
 
 <div class="row">
     <div class="col s12">           
-        <div class="input-field col s6">
-            <i class="material-icons prefix">local_shipping</i>
-            <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada', $entrada->proveedorEntrada) }}" disabled required>
-            <label for="proveedorEntrada">Proveedor</label>
-        </div>
         @if ($detalles)
             @php
                 $total = 0;
                 foreach ($detalles as $detalle) {
-                    $total += $detalle->subEntrada;
+                    $total += $detalle->subSalida;
                 }
             @endphp
 
             <div class="input-field col s6">
                 <i class="material-icons prefix">attach_money</i>
-                <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
-                <label for="montoEntrad">Total</label>
-                @if ($errors->has('montoEntrad'))
-                    @error('montoEntrad')
+                <input id="montoSalid" name="montoSalid" type="text" value="${{ $total }}" class="validate" disabled required>
+                <label for="montoSalid">Total</label>
+                @if ($errors->has('montoSalid'))
+                    @error('montoSalid')
                         <span class="helper-text">{{ $message }}</span>
                     @enderror    
                 @endif
             </div>
-            <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
+            <input id="montoSalida" name="montoSalida" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
         @endif
-
-        <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
 
     </div>
 </div>
@@ -73,7 +66,7 @@
                     <th>Corr.</th>
                     <th>Medicamento</th>
                     <th>Cantidad</th>
-                    <th>Costo</th>
+                    <th>Precio</th>
                     <th>Subtotal</th>
                 </tr>
             </thead>
@@ -88,9 +81,9 @@
                         <tr>
                             <td>{{ $i }}</td>
                             <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
-                            <td>{{ $detalle->cantidadEntrada }}</td>
-                            <td>${{ $detalle->precioEntrada }}</td>
-                            <td>${{ $detalle->subEntrada }}</td>
+                            <td>{{ $detalle->cantidadSalida }}</td>
+                            <td>${{ $detalle->precioSalida }}</td>
+                            <td>${{ $detalle->subSalida }}</td>
                         </tr>
 
                         @php

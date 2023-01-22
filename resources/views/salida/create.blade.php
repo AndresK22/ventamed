@@ -1,5 +1,5 @@
 @extends('layout.indexDash')
-@section('title','Actualizar entrada')
+@section('title','Ingresar salida')
 
 @section('content')
 
@@ -19,65 +19,61 @@
 </div>
 
 <div class="row">
+    <div class="col s12 left-align">
+        <button data-target="modalSalir" class="waves-effect waves-light btn-flat modal-trigger" onclick="salir({{ $salida->id }})"><i class="material-icons left">arrow_back</i>Ver registros de salidas</button>
+    </div>
+</div>
+
+<div class="row">
     <div class="col s12 center-align">
-        <h3>Actualizar entrada de medicamento</h3>
+        <h3>Ingresar salida de medicamento</h3>
     </div>
 </div>
 
 <div class="row">
     <div class="col s12">
-        <form action="{{ route('entrada.update', $entrada->id) }}" method="POST">
+        <form action="{{ route('salida.store') }}" method="POST">
+        
             @csrf
             @method('put')
             
-            <div class="input-field col s4">
-                <i class="material-icons prefix">local_shipping</i>
-                <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada', $entrada->proveedorEntrada) }}" class="validate" required>
-                <label for="proveedorEntrada">Proveedor</label>
-                @if ($errors->has('proveedorEntrada'))
-                    @error('proveedorEntrada')
-                        <span class="helper-text">{{ $message }}</span>
-                    @enderror    
-                @endif
-            </div>
             @if ($detalles)
                 @php
                     $total = 0;
                     foreach ($detalles as $detalle) {
-                        $total += $detalle->subEntrada;
+                        $total += $detalle->subSalida;
                     }
                 @endphp
 
                 <div class="input-field col s4">
                     <i class="material-icons prefix">attach_money</i>
-                    <input id="montoEntrad" name="montoEntrad" type="text" value="${{ $total }}" class="validate" disabled required>
-                    <label for="montoEntrad">Total</label>
-                    @if ($errors->has('montoEntrad'))
-                        @error('montoEntrad')
+                    <input id="montoSalid" name="montoSalid" type="text" value="${{ $total }}" class="validate" disabled required>
+                    <label for="montoSalid">Total</label>
+                    @if ($errors->has('montoSalid'))
+                        @error('montoSalid')
                             <span class="helper-text">{{ $message }}</span>
                         @enderror    
                     @endif
                 </div>
-                <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
+                <input id="montoSalida" name="montoSalida" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
             @endif
 
-            <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
+            <input id="salida_id" name="salida_id" type="text" value="{{ $salida->id }}" class="validate" hidden required>
             @php
                 $j = 0;
             @endphp
             @if ($detalles)
                 @foreach ($detalles as $detalle)
-                    <input name="detalles[{{ $j }}][id]" value="{{ $detalle->id }}" hidden>
                     <input name="detalles[{{ $j }}][idMed]" value="{{ $detalle->medicamento_id }}" hidden>
-                    <input name="detalles[{{ $j }}][cantidadEntrada]" value="{{ $detalle->cantidadEntrada }}" hidden>
+                    <input name="detalles[{{ $j }}][cantidadSalida]" value="{{ $detalle->cantidadSalida }}" hidden>
                     @php
                         $j++;
                     @endphp
                 @endforeach
             @endif
-
-            <div class="input-field col s4 center-align">
-                <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Actualizar entrada</button>
+            
+            <div class="input-field col s4">
+                <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar salida</button>
             </div>
             
         </form>
@@ -96,7 +92,7 @@
                     <th>Corr.</th>
                     <th>Medicamento</th>
                     <th>Cantidad</th>
-                    <th>Costo</th>
+                    <th>Precio</th>
                     <th>Subtotal</th>
                     <th>Acciones</th>
                 </tr>
@@ -112,12 +108,12 @@
                         <tr>
                             <td>{{ $i }}</td>
                             <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
-                            <td>{{ $detalle->cantidadEntrada }}</td>
-                            <td>${{ $detalle->precioEntrada }}</td>
-                            <td>${{ $detalle->subEntrada }}</td>
+                            <td>{{ $detalle->cantidadSalida }}</td>
+                            <td>${{ $detalle->precioSalida }}</td>
+                            <td>${{ $detalle->subSalida }}</td>
                             <td>
-                                <button data-target="modalEditDetEnt" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadEntrada }}, {{ $detalle->precioEntrada }})"><i class="material-icons">edit</i></button>
-                                <button data-target="modalDeleteDetalleEn" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
+                                <button data-target="modalEditDetSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadSalida }}, {{ $detalle->precioSalida }})"><i class="material-icons">edit</i></button>
+                                <button data-target="modalDeleteDetalleSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             </td>
                         </tr>
 
@@ -134,7 +130,7 @@
     <div class="col s4">
         <div class="card">
             <div class="card-content">
-                <form id="formDeta" action="{{ route('detaEnt.store2') }}" method="POST">
+                <form id="formDeta" action="{{ route('detaSal.store') }}" method="POST">
                     @csrf
                     <div class="input-field col s12">
                         <input id="medicamento_id" name="medicamento_id" type="text" value="{{ old('medicamento_id') }}" class="validate" hidden required>
@@ -161,14 +157,14 @@
                                 @enderror    
                             @endif
                         </div>
-                    </div>            
+                    </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">trending_up</i>
-                            <input id="cantidadEntrada" name="cantidadEntrada" type="number" min="0" step="1" class="validate" required>
-                            <label for="cantidadEntrada">Cantidad</label>
-                            @if ($errors->has('cantidadEntrada'))
-                                @error('cantidadEntrada')
+                            <i class="material-icons prefix">monetization_on</i>
+                            <input id="precioSal" name="precioSal" type="number" min="0.01" max="999.99" step="0.01" class="validate" disabled required>
+                            <input id="precioSalida" name="precioSalida" type="number" min="0.01" max="999.99" step="0.01" class="validate" hidden required>
+                            @if ($errors->has('precioSalida'))
+                                @error('precioSalida')
                                     <span class="helper-text">{{ $message }}</span>
                                 @enderror    
                             @endif
@@ -176,11 +172,11 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <i class="material-icons prefix">monetization_on</i>
-                            <input id="precioEntrada" name="precioEntrada" type="number" min="0.01" max="999.99" step="0.01" class="validate" required>
-                            <label for="precioEntrada">Costo</label>
-                            @if ($errors->has('precioEntrada'))
-                                @error('precioEntrada')
+                            <i class="material-icons prefix">trending_up</i>
+                            <input id="cantidadSalida" name="cantidadSalida" type="number" min="0" step="1" class="validate" required>
+                            <label for="cantidadSalida">Cantidad</label>
+                            @if ($errors->has('cantidadSalida'))
+                                @error('cantidadSalida')
                                     <span class="helper-text">{{ $message }}</span>
                                 @enderror    
                             @endif
@@ -192,7 +188,7 @@
                         </div>
                     </div>
                     <div class="input-field col s12">
-                        <input id="entrada_id" name="entrada_id" type="text" value="{{ $entrada->id }}" class="validate" hidden required>
+                        <input id="salida_id" name="salida_id" type="text" value="{{ $salida->id }}" class="validate" hidden required>
                     </div>
                 </form>
             </div>
@@ -202,7 +198,7 @@
 </div>
 
 <!-- Modal Structure -->
-<div id="modalDeleteDetalleEn" class="modal">
+<div id="modalDeleteDetalleSal" class="modal">
     <div class="modal-content">
         <h4>Confirme la eliminaci&oacute;n</h4>
         <p>¿Est&aacute; seguro que desea eliminar el medicamento "<span id="mosNom"></span>"?</p>
@@ -217,8 +213,7 @@
     </div>
 </div>
 
-
-<div id="modalEditDetEnt" class="modal">
+<div id="modalEditDetSal" class="modal">
     <div class="modal-content">
         <h4>Actualizar medicamento "<span id="mosNomEdit"></span>"</h4>
 
@@ -226,23 +221,15 @@
             @csrf
             @method('put')
             <input id='idDet' name="idDet" type="number" min="1" step="1" hidden>
+
+            <input id="precioSalidaEdit" name="precioSalidaEdit" type="number" min="0.01" max="999.99" step="0.01" class="validate" hidden required>
+            
             <div class="row">
                 <div class="input-field col s12">
                     <i class="material-icons prefix">trending_up</i>
-                    <input id='cantidadEntradaEdit' name="cantidadEntradaEdit" type="number" min="0" step="1" class="validate" required>
-                    @if ($errors->has('cantidadEntradaEdit'))
-                        @error('cantidadEntradaEdit')
-                            <span class="helper-text">{{ $message }}</span>
-                        @enderror    
-                    @endif
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">monetization_on</i>
-                    <input id="precioEntradaEdit" name="precioEntradaEdit" type="number" min="0.01" max="999.99" step="0.01" class="validate" required>
-                    @if ($errors->has('precioEntradaEdit'))
-                        @error('precioEntradaEdit')
+                    <input id='cantidadSalidaEdit' name="cantidadSalidaEdit" type="number" min="0" step="1" class="validate" required>
+                    @if ($errors->has('cantidadSalidaEdit'))
+                        @error('cantidadSalidaEdit')
                             <span class="helper-text">{{ $message }}</span>
                         @enderror    
                     @endif
@@ -256,44 +243,61 @@
     </div>
 </div>
 
+<div id="modalSalir" class="modal">
+    <div class="modal-content">
+        <h4>¿Est&aacute; seguro que desea salir?</h4>
+        <p>Si sale, se elminaran todos los cambios realizados</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat light-green lighten-1">Cancelar</a>
+        <form method="POST" action="" style="display: inline;">
+            @csrf
+            @method('GET')
+            <a class="waves-effect waves-green btn-flat red lighten-1" onclick="$(this).closest('form').submit();">Salir</a>
+        </form>
+    </div>
+</div>
 
 @routes()
 @section('js_user_page')
 <script type="text/javascript">
 
-    var borrarDetEn;
-    var editarDetEn;
+    var borrarDetSal;
+    var editarDetSal;
+    var salir;
 
     $(document).ready(function() {
 
+        //Funcion para salir sin guardar cambios
+        salir = function(idSal){
+            var modal = $('#modalSalir')
+            modal.find('form').attr('action', route('salida.destroy2', idSal));
+        };
+
         //Funcion para eliminar un detalle de Entrada
-        borrarDetEn = function(idEn, idDetEn, nomEnDet){
-            /*var idDetEn = $('#idDetEn').val();
-            var idEn = $('#entrada_id').val();
-
-            var nomEnDet = $('#nomEnDet').val();*/
+        borrarDetSal = function(idSal, idDetSal, nomSalDet){
             var mosNom = $('#mosNom');
-            mosNom.text(nomEnDet);
+            mosNom.text(nomSalDet);
 
-            var modal = $('#modalDeleteDetalleEn')
-            modal.find('form').attr('action', route('detaEnt.destroy2', [idEn, idDetEn]));
+            var modal = $('#modalDeleteDetalleSal')
+            modal.find('form').attr('action', route('detaSal.destroy', [idSal, idDetSal]));
         };
 
         //Funcion para editar un detalle de entrada
-        editarDetEn = function(idEn, idDetEn, nomEnDet, cantDet, precEnt){
-            var cantidad = $('#cantidadEntradaEdit');
-            var precio = $('#precioEntradaEdit');
+        editarDetSal = function(idSal, idDetSal, nomSalDet, cantDet, precSal){
+            var cantidad = $('#cantidadSalidaEdit');
+            var precio = $('#precioSalidaEdit');
             var idDet = $('#idDet');
 
             cantidad.val(cantDet);
-            precio.val(precEnt);
-            idDet.val(idDetEn);
+            precio.val(precSal);
+            idDet.val(idDetSal);
 
             var mosNom = $('#mosNomEdit');
-            mosNom.text(nomEnDet);
+            mosNom.text(nomSalDet);
 
-            var modal = $('#modalEditDetEnt')
-            modal.find('form').attr('action', route('detaEnt.update2', [idEn, idDetEn]));
+            var modal = $('#modalEditDetSal')
+            modal.find('form').attr('action', route('detaSal.update', [idSal, idDetSal]));
         };
 
         //Funcion para buscar el medicamento segun el codigo de barras
@@ -301,7 +305,7 @@
             var codBarra = $('#codBarras').val();
             $.ajax({
                 // la URL para la petición
-                url : route('entrada.buscMed'),
+                url : route('salida.buscMed'),
             
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
@@ -321,6 +325,8 @@
                     //console.log(res);
                     $("#medicamento_id").val(res.id);
                     $("#nombreMedicamento").val(res.nombreMedicamento);
+                    $("#precioSal").val(res.precioUnitario);
+                    $("#precioSalida").val(res.precioUnitario);
                     //$("#precioUnitario").val(res.precioUnitario);
                 },
             
@@ -336,7 +342,7 @@
             
                 // código a ejecutar sin importar si la petición falló o no
                 complete : function(jqXHR, status) {
-                    //console.log('Petición realizada');
+                    /*console.log('Petición realizada');*/
                 }
             });
         });

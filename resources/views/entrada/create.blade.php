@@ -119,8 +119,8 @@
                             <td>{{ $i }}</td>
                             <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
                             <td>{{ $detalle->cantidadEntrada }}</td>
-                            <td>{{ $detalle->precioEntrada }}</td>
-                            <td>{{ $detalle->subEntrada }}</td>
+                            <td>${{ $detalle->precioEntrada }}</td>
+                            <td>${{ $detalle->subEntrada }}</td>
                             <td>
                                 <button data-target="modalEditDetEnt" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadEntrada }}, {{ $detalle->precioEntrada }})"><i class="material-icons">edit</i></button>
                                 <button data-target="modalDeleteDetalleEn" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
@@ -282,6 +282,7 @@
 
     var borrarDetEn;
     var editarDetEn;
+    var salir;
 
     $(document).ready(function() {
 
@@ -343,10 +344,9 @@
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(res) {
-                    console.log(res);
+                    //console.log(res);
                     $("#medicamento_id").val(res.id);
                     $("#nombreMedicamento").val(res.nombreMedicamento);
-                    //$("#precioUnitario").val(res.precioUnitario);
                 },
             
                 // código a ejecutar si la petición falla;
@@ -354,14 +354,14 @@
                 // el objeto jqXHR (extensión de XMLHttpRequest), un texto con el estatus
                 // de la petición y un texto con la descripción del error que haya dado el servidor
                 error : function(jqXHR, status, error) {
-                    console.log('Disculpe, existió un problema');
+                    /*console.log('Disculpe, existió un problema');
                     console.log('El status dice: ' + status);
-                    console.log('El error dice: ' + error);
+                    console.log('El error dice: ' + error);*/
                 },
             
                 // código a ejecutar sin importar si la petición falló o no
                 complete : function(jqXHR, status) {
-                    console.log('Petición realizada');
+                    //console.log('Petición realizada');
                 }
             });
         });

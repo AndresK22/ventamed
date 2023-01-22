@@ -8,7 +8,7 @@ use App\Http\Requests\DetalleEntradaUpdateRequest;
 use App\Models\Medicamento;
 use App\Models\EntradaMedicamento;
 use App\Models\DetalleEntrada;
-use Exception;;
+use Exception;
 
 class DetalleEntradaController extends Controller
 {

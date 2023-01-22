@@ -184,7 +184,6 @@ class EntradaMedicamentoController extends Controller
 
                 foreach ($detalles as $detalle) {
                     $medicamento = Medicamento::find($detalle['idMed']);
-
                     if($detallesOrig[$i]['id'] == $detalle['id']){
 
                         if($detallesOrig[$i]['cantidadEntrada'] > $detalle['cantidadEntrada']){
@@ -226,20 +225,28 @@ class EntradaMedicamentoController extends Controller
      */
     public function destroy(EntradaMedicamento $entrada)
     {
-        $entrada->delete();
-        return redirect()->route('entrada.index')->with('status','Entrada eliminada correctamente');
+        try{
+            $entrada->delete();
+            return redirect()->route('entrada.index')->with('status','Entrada eliminada correctamente');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     public function destroy2(EntradaMedicamento $entrada)
     {
-        $detalles = DetalleEntrada::where('entrada_medicamento_id', '=', $entrada->id)->get();
-        if($detalles != null){
-            foreach($detalles as $detalle){
-                $detalle->delete();
+        try{
+            $detalles = DetalleEntrada::where('entrada_medicamento_id', '=', $entrada->id)->get();
+            if($detalles != null){
+                foreach($detalles as $detalle){
+                    $detalle->delete();
+                }
             }
-        }
 
-        $entrada->delete();
-        return redirect()->route('entrada.index')->with('status','Ha salido de la entrada de medicamentos');
+            $entrada->delete();
+            return redirect()->route('entrada.index')->with('status','Ha salido de la entrada de medicamentos');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 }

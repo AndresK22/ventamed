@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('salida_medicamentos', function (Blueprint $table) {
             $table->id();
-            $table->date('fechaSalida');
+            $table->date('fechaSalida')->nullable();
+            $table->time('horaSalida')->nullable();
             $table->decimal('montoSalida', 5, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -6,6 +6,9 @@ use App\Http\Controllers\AutController;
 use App\Http\Controllers\MedicamentoController;
 use App\Http\Controllers\EntradaMedicamentoController;
 use App\Http\Controllers\DetalleEntradaController;
+use App\Http\Controllers\SalidaMedicamentoController;
+use App\Http\Controllers\DetalleSalidaController;
+use App\Models\SalidaMedicamento;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,3 +94,35 @@ Route::put('detaEnt/update2/{entrada}/{detalle}', [DetalleEntradaController::cla
 //Eliminar
 Route::get('detaEnt/destroy/{entrada}/{detalle}', [DetalleEntradaController::class,'destroy'])->name('detaEnt.destroy')->middleware('auth');
 Route::get('detaEnt/destroy2/{entrada}/{detalle}', [DetalleEntradaController::class,'destroy2'])->name('detaEnt.destroy2')->middleware('auth');
+
+
+//------------------------------------Salida de medicamentos-------------------------------
+//Inicio
+Route::get('salida', [SalidaMedicamentoController::class, 'index'])->name('salida.index')->middleware('auth');
+//Crear
+Route::get('salida/create', [SalidaMedicamentoController::class, 'create'])->name('salida.create')->middleware('auth');
+Route::get('salida/create/{salida}', [SalidaMedicamentoController::class, 'create2'])->name('salida.create2')->middleware('auth');
+Route::put('salida/store', [SalidaMedicamentoController::class,'store'])->name('salida.store')->middleware('auth');
+//Buscar
+Route::post('salida/buscMed', [SalidaMedicamentoController::class,'buscMed'])->name('salida.buscMed')->middleware('auth');
+//Ver
+Route::get('salida/show/{salida}', [SalidaMedicamentoController::class, 'show'])->name('salida.show')->middleware('auth');
+//Editar
+Route::get('salida/edit/{salida}', [SalidaMedicamentoController::class, 'edit'])->name('salida.edit')->middleware('auth');
+Route::get('salida/edit2/{salida}', [SalidaMedicamentoController::class,'edit2'])->name('salida.edit2')->middleware('auth');
+Route::put('salida/update/{salida}', [SalidaMedicamentoController::class,'update'])->name('salida.update')->middleware('auth');
+
+//Eliiminar
+Route::get('salida/destroy/{salida}', [SalidaMedicamentoController::class,'destroy'])->name('salida.destroy')->middleware('auth');
+Route::get('salida/destroy2/{salida}', [SalidaMedicamentoController::class,'destroy2'])->name('salida.destroy2')->middleware('auth');
+
+//------------------------------------Detalle Salida de medicamentos-------------------------------
+//Crear
+Route::post('detaSal/store', [DetalleSalidaController::class,'store'])->name('detaSal.store')->middleware('auth');
+Route::post('detaSal/store2', [DetalleSalidaController::class,'store2'])->name('detaSal.store2')->middleware('auth');
+//Editar
+Route::put('detaSal/update/{salida}/{detalle}', [DetalleSalidaController::class,'update'])->name('detaSal.update')->middleware('auth');
+Route::put('detaSal/update2/{salida}/{detalle}', [DetalleSalidaController::class,'update2'])->name('detaSal.update2')->middleware('auth');
+//Eliminar
+Route::get('detaSal/destroy/{salida}/{detalle}', [DetalleSalidaController::class,'destroy'])->name('detaSal.destroy')->middleware('auth');
+Route::get('detaSal/destroy2/{salida}/{detalle}', [DetalleSalidaController::class,'destroy2'])->name('detaSal.destroy2')->middleware('auth');

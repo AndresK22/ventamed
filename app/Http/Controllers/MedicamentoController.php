@@ -7,6 +7,7 @@ use App\Http\Requests\MedicamentoRequest;
 use App\Http\Requests\MedicamentoUpdateRequest;
 use App\Models\Medicamento;
 use Exception;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MedicamentoController extends Controller
 {
@@ -156,6 +157,18 @@ class MedicamentoController extends Controller
         try{
             $medicamento->delete();
             return redirect()->route('medicamento.index')->with('status', 'Medicamento eliminado con exito');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function pdf()
+    {
+        try{
+            $medicamentos = Medicamento::orderBy('nombreMedicamento', 'asc')->get();
+
+            $pdf = Pdf::loadView('medicamento.pdf', compact('medicamentos'));
+            return $pdf->stream('Listado_Medicamentos_' . date("d/m/Y") . '.pdf');
         }catch(Exception $e){
             return $e->getMessage();
         }

@@ -44,7 +44,7 @@ Route::group(['middleware' => ['role:administrador']], function () {
     //Editar
     Route::get('user/edit/{user}', [UserController::class, 'edit'])->name('user.edit')->middleware('auth');
     Route::put('user/update/{user}', [UserController::class,'update'])->name('user.update')->middleware('auth');
-    //Eliiminar
+    //Eliminar
     Route::get('user/destroy/{user}/{rol}', [UserController::class,'destroy'])->name('user.destroy')->middleware('auth');
 });
 
@@ -56,11 +56,13 @@ Route::group(['middleware' => ['role:administrador|gerente']], function () {
     Route::get('medicamento/create', [MedicamentoController::class, 'create'])->name('medicamento.create')->middleware('auth');
     Route::post('medicamento/store', [MedicamentoController::class,'store'])->name('medicamento.store')->middleware('auth');
     Route::post('medicamento/store2', [MedicamentoController::class,'store2'])->name('medicamento.store2')->middleware('auth');
+    //Crear pdf
+    Route::get('medicamento/pdf', [MedicamentoController::class,'pdf'])->name('medicamento.pdf')->middleware('auth');
     //Editar
     Route::get('medicamento/edit/{medicamento}', [MedicamentoController::class, 'edit'])->name('medicamento.edit')->middleware('auth');
     Route::put('medicamento/update/{medicamento}', [MedicamentoController::class,'update'])->name('medicamento.update')->middleware('auth');
     Route::put('medicamento/update2/{medicamento}', [MedicamentoController::class,'update2'])->name('medicamento.update2')->middleware('auth');
-    //Eliiminar
+    //Eliminar
     Route::get('medicamento/destroy/{medicamento}/', [MedicamentoController::class,'destroy'])->name('medicamento.destroy')->middleware('auth');
 });
 

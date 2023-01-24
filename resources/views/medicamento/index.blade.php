@@ -21,8 +21,11 @@
 </div>
 
 <div class="row">
-    <div class="col s12 left-align">
+    <div class="col s6 left-align">
         <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-2">Crear medicamento</a>
+    </div>
+    <div class="col s6 right-align">
+        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-2">Imprimir listado</a>
     </div>
 </div>
 

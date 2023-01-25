@@ -81,7 +81,7 @@
                 @foreach ($entradas as $entrada)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>{{ $entrada->fechaEntrada }}</td>
+                        <td>{{ date("d/m/Y", strtotime($entrada->fechaEntrada)) }}</td>
                         <td>{{ $entrada->proveedorEntrada }}</td>
                         <td>${{ $entrada->montoEntrada }}</td>
                         <td>

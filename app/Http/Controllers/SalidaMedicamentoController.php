@@ -7,7 +7,6 @@ use App\Http\Requests\SalidaRequest;
 use App\Models\SalidaMedicamento;
 use App\Models\DetalleSalida;
 use App\Models\Medicamento;
-use Illuminate\Pagination\Paginator;
 use Exception;
 
 require __DIR__ . '../../../../vendor/autoload.php';
@@ -40,6 +39,23 @@ class SalidaMedicamentoController extends Controller
             }
 
             return view('salida.index', compact('salidas'));
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function ventaDiaria(Request $request)
+    {
+        try{
+            $fecha1 = $request->busquedaSalida1;
+            $fecha2 = $request->busquedaSalida2;
+
+            $salidas = SalidaMedicamento::where('fechaSalida', '=', date("Y-m-d"))
+            ->orderBy('fechaSalida', 'desc')
+            ->orderBy('horaSalida', 'desc')
+            ->get();
+
+            return view('salida.ventaDiaria', compact('salidas'));
         }catch(Exception $e){
             return $e->getMessage();
         }
@@ -170,6 +186,24 @@ class SalidaMedicamentoController extends Controller
             $detalles = DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get();
             //dd($detalles[0]->medicamento->nombreMedicamento);
             return view('salida.show', compact('salida', 'detalles'));
+            
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show2(SalidaMedicamento $salida)
+    {
+        try{
+            $detalles = DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get();
+            //dd($detalles[0]->medicamento->nombreMedicamento);
+            return view('salida.show2', compact('salida', 'detalles'));
             
         }catch(Exception $e){
             return $e->getMessage();

@@ -38,9 +38,10 @@
 
                     <li class="{{ request()->routeIs('entrada.*') ? 'active': '' }}"><a href="{{ route('entrada.create') }}">Entrada de medicamentos</a></li>
                     <li class="{{ request()->routeIs('salida.*') ? 'active': '' }}"><a href="{{ route('salida.create') }}">Salida de medicamentos</a></li>
+                    <li class="{{ request()->routeIs('ventaDiaria.*') ? 'active': '' }}"><a href="{{ route('ventaDiaria.index') }}">Venta diaria</a></li>
                     
                     @hasanyrole('administrador')
-                        <li class="{{ request()->routeIs('control.*') ? 'active': '' }}"><a href="#!">Control mensual</a></li>
+                        <!-- <li class="{{ request()->routeIs('control.*') ? 'active': '' }}"><a href="#!">Control mensual</a></li> -->
                     @endhasanyrole
 
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -63,9 +64,10 @@
 
         <li class="{{ request()->routeIs('entrada.*') ? 'active': '' }}"><a href="{{ route('entrada.create') }}">Entrada de medicamentos</a></li>
         <li class="{{ request()->routeIs('salida.*') ? 'active': '' }}"><a href="{{ route('salida.create') }}">Salida de medicamentos</a></li>
+        <li class="{{ request()->routeIs('ventaDiaria.*') ? 'active': '' }}"><a href="{{ route('ventaDiaria.index') }}">Venta diaria</a></li>
         
         @hasanyrole('administrador')
-            <li class="{{ request()->routeIs('control.*') ? 'active': '' }}"><a href="#!">Control mensual</a></li>
+            <!-- <li class="{{ request()->routeIs('control.*') ? 'active': '' }}"><a href="#!">Control mensual</a></li> -->
         @endhasanyrole
 
         <li><div class="divider"></div></li>

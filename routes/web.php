@@ -128,3 +128,8 @@ Route::put('detaSal/update2/{salida}/{detalle}', [DetalleSalidaController::class
 //Eliminar
 Route::get('detaSal/destroy/{salida}/{detalle}', [DetalleSalidaController::class,'destroy'])->name('detaSal.destroy')->middleware('auth');
 Route::get('detaSal/destroy2/{salida}/{detalle}', [DetalleSalidaController::class,'destroy2'])->name('detaSal.destroy2')->middleware('auth');
+
+
+//------------------------------------VentaDiaria-------------------------------
+Route::get('ventaDiaria', [SalidaMedicamentoController::class, 'ventaDiaria'])->name('ventaDiaria.index')->middleware('auth');
+Route::get('ventaDiaria/show/{salida}', [SalidaMedicamentoController::class, 'show2'])->name('ventaDiaria.show')->middleware('auth');

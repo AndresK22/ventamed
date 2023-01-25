@@ -67,6 +67,7 @@
                 <tr>
                     <th>Corr.</th>
                     <th>Fecha</th>
+                    <th>Hora</th>
                     <th>Monto de la salida</th>
                     <th>Acciones</th>
                 </tr>
@@ -80,7 +81,8 @@
                 @foreach ($salidas as $salida)
                     <tr>
                         <td>{{ $i }}</td>
-                        <td>{{ $salida->fechaSalida }}</td>
+                        <td>{{ date("d/m/Y", strtotime($salida->fechaSalida)) }}</td>
+                        <td>{{ date("H:i", strtotime($salida->horaSalida)) }}</td>
                         <td>${{ $salida->montoSalida }}</td>
                         <td>
                             <a href="{{ route('salida.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a>

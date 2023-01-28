@@ -16,8 +16,30 @@
 
 <div class="row">
     <div class="col s12 center-align">
-        <h3>Venta del dia</h3>
+        <h3>Venta del dia {{ date("d/m/Y", strtotime($fechaTit)) }}</h3>
     </div>
+</div>
+
+<div class="row">
+    <form class="col s12" action="{{ route('ventaDiaria.index') }}" method="GET">
+        @csrf
+        @method('get')
+        <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">date_range</i>
+                <input id="busquedaSalida1" name="busquedaSalida1" type="text" class="datepicker" maxlength="255" value="{{ old('busquedaSalida1') }}" class="validate">
+                <label for="busquedaSalida1">Buscar por fecha</label>
+                @if ($errors->has('busquedaSalida1'))
+                    @error('busquedaSalida1')
+                        <span class="helper-text">{{ $message }}</span>
+                    @enderror    
+                @endif
+            </div>
+            <div class="input-field col s2 right-align">
+                <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <div class="row">

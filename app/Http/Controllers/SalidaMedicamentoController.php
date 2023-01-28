@@ -48,14 +48,24 @@ class SalidaMedicamentoController extends Controller
     {
         try{
             $fecha1 = $request->busquedaSalida1;
-            $fecha2 = $request->busquedaSalida2;
 
-            $salidas = SalidaMedicamento::where('fechaSalida', '=', date("Y-m-d"))
-            ->orderBy('fechaSalida', 'desc')
-            ->orderBy('horaSalida', 'desc')
-            ->get();
+            if($fecha1 != null){
+                $salidas = SalidaMedicamento::orderBy('fechaSalida', 'desc')
+                ->orderBy('horaSalida', 'desc')
+                ->fechaSalida1($fecha1)
+                ->get();
 
-            return view('salida.ventaDiaria', compact('salidas'));
+                $fechaTit = $fecha1;
+            }else{
+                $salidas = SalidaMedicamento::where('fechaSalida', '=', date("Y-m-d"))
+                ->orderBy('fechaSalida', 'desc')
+                ->orderBy('horaSalida', 'desc')
+                ->get();
+
+                $fechaTit = date("Y-m-d");
+            }
+
+            return view('salida.ventaDiaria', compact('salidas', 'fechaTit'));
         }catch(Exception $e){
             return $e->getMessage();
         }

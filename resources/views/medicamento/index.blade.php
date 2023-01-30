@@ -25,7 +25,7 @@
         <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-2">Crear medicamento</a>
     </div>
     <div class="col s6 right-align">
-        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-2">Imprimir listado</a>
+        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-2" target="_blank" rel="noopener noreferrer">Imprimir listado</a>
     </div>
 </div>
 

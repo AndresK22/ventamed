@@ -40,15 +40,8 @@
                 }
             @endphp
 
-            <div class="input-field col s6">
-                <i class="material-icons prefix">attach_money</i>
-                <input id="montoSalid" name="montoSalid" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
-                <label for="montoSalid">Total</label>
-                @if ($errors->has('montoSalid'))
-                    @error('montoSalid')
-                        <span class="helper-text">{{ $message }}</span>
-                    @enderror    
-                @endif
+            <div class="card-panel col s12">
+                <p id="montoSalid" class="flow-text">Total: ${{ number_format($total, 2) }}</p>
             </div>
             <input id="montoSalida" name="montoSalida" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
         @endif

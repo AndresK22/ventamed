@@ -32,10 +32,8 @@
 
 <div class="row">
     <div class="col s12">           
-        <div class="input-field col s6">
-            <i class="material-icons prefix">local_shipping</i>
-            <input id="proveedorEntrada" name="proveedorEntrada" type="text" maxlength="255"value="{{ old('proveedorEntrada', $entrada->proveedorEntrada) }}" disabled required>
-            <label for="proveedorEntrada">Proveedor</label>
+        <div class="center-align col s6">
+            <p id="proveedorEntrada" class="flow-text">Proveedor: {{ $entrada->proveedorEntrada }}</p>
         </div>
         @if ($detalles)
             @php
@@ -45,15 +43,8 @@
                 }
             @endphp
 
-            <div class="input-field col s6">
-                <i class="material-icons prefix">attach_money</i>
-                <input id="montoEntrad" name="montoEntrad" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
-                <label for="montoEntrad">Total</label>
-                @if ($errors->has('montoEntrad'))
-                    @error('montoEntrad')
-                        <span class="helper-text">{{ $message }}</span>
-                    @enderror    
-                @endif
+            <div class="center-align col s6">
+                <p id="montoEntrad" class="flow-text">Total: ${{ number_format($total, 2) }}</p>
             </div>
             <input id="montoEntrada" name="montoEntrada" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
         @endif

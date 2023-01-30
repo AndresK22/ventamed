@@ -7,11 +7,12 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Exception;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\SalidaMedicamento;
+use App\Models\Medicamento;
 
 class AutController extends Controller
 {
@@ -79,11 +80,55 @@ class AutController extends Controller
         try{
             $credentials = $request->validated();
             if (Auth::attempt($credentials)){
-                $request->session()->regenerate();
+                $request->session()->regenerate();                
                 return redirect()->intended('dashboard')->with('status','Inicio de sesion correcto');
             }else{
-                return redirect()->route('dashboard')->with('status','No se pudo iniciar la sesion');
+                return redirect()->route('login')->with('status','No se pudo iniciar la sesion');
             }
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    public function dashboard()
+    {
+        try{
+            //Venta del dia
+            $salidas = SalidaMedicamento::where('fechaSalida', '=', date("Y-m-d"))
+            ->orderBy('fechaSalida', 'desc')
+            ->orderBy('horaSalida', 'desc')
+            ->get();
+
+            //Medicamentos faltantes
+            $medicamentos = Medicamento::orderBy('nombreMedicamento', 'asc')
+            ->where('cantidadMedicamento', '<=', 20)
+            ->get();
+
+            $inicioMes = date("Y-m-01");
+            $finMes = date("Y-m-t");
+            //Mas vendidos
+            $masVendidos = DB::table('detalle_salidas')
+            ->join('medicamentos', 'detalle_salidas.medicamento_id', '=', 'medicamentos.id')
+            ->join('salida_medicamentos', 'detalle_salidas.salida_medicamento_id', '=', 'salida_medicamentos.id')
+            ->selectRaw('nombreMedicamento, SUM(cantidadSalida) as suma')
+            ->whereBetween('fechaSalida', [$inicioMes, $finMes])
+            ->groupByRaw('nombreMedicamento')
+            ->orderByRaw('SUM(cantidadSalida) desc')
+            ->limit(20)
+            ->get();
+
+            //Menos vendidos
+            $menosVendidos = DB::table('detalle_salidas')
+            ->join('medicamentos', 'detalle_salidas.medicamento_id', '=', 'medicamentos.id')
+            ->join('salida_medicamentos', 'detalle_salidas.salida_medicamento_id', '=', 'salida_medicamentos.id')
+            ->selectRaw('nombreMedicamento, SUM(cantidadSalida) as suma')
+            ->whereBetween('fechaSalida', [$inicioMes, $finMes])
+            ->groupByRaw('nombreMedicamento')
+            ->orderByRaw('SUM(cantidadSalida) asc')
+            ->limit(20)
+            ->get();
+
+            return view('dashboard', compact('salidas', 'medicamentos', 'masVendidos', 'menosVendidos'));
         }catch(Exception $e){
             return $e->getMessage();
         }

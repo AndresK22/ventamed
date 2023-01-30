@@ -28,6 +28,7 @@
             <div class="nav-wrapper indigo darken-1">
                 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                 <ul class="left hide-on-med-and-down">
+                    <li class="{{ request()->routeIs('dashboard') ? 'active': '' }}"><a href="{{ route('dashboard') }}">Inicio</a></li>
                     @role('administrador')
                         <li class="{{ request()->routeIs('user.*') ? 'active': '' }}"><a href="{{ route('user.index') }}">Usuarios</a></li>
                     @endrole
@@ -54,6 +55,7 @@
     </div>
     
     <ul class="sidenav" id="mobile-demo">
+        <li class="{{ request()->routeIs('dashboard') ? 'active': '' }}"><a href="{{ route('dashboard') }}">Inicio</a></li>
         @role('administrador')
             <li class="{{ request()->routeIs('user.*') ? 'active': '' }}"><a href="{{ route('user.index') }}">Usuarios</a></li>
         @endrole

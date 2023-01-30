@@ -1,5 +1,5 @@
 @extends('layout.indexDash')
-@section('title','Salida de medicamentos')
+@section('title','Venta diaria')
 
 @section('content')
 
@@ -51,11 +51,7 @@
             }
         @endphp
 
-        <div class="input-field col s6 left-align">
-            <i class="material-icons prefix">attach_money</i>
-            <input id="montoSalida" name="montoSalida" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
-            <label for="montoSalida">Total</label>
-        </div>
+        <p class="flow-text">Venta del dia: <span>${{ number_format($total, 2) }}</span> </p>
     @endif
 </div>
 
@@ -85,6 +81,7 @@
                         <td>${{ $salida->montoSalida }}</td>
                         <td>
                             <a href="{{ route('ventaDiaria.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a>
+                            <a href="{{ route('ventaDiaria.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">print</i></a>
                         </td>
                     </tr>
 

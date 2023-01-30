@@ -22,7 +22,7 @@
 
 <div class="row">
     <div class="col s12 center-align">
-        <h3>Medicamentos</h3>
+        <h4>Listado de medicamentos a la fecha de {{ date('d/m/Y') }}</h4>
     </div>
 </div>
 

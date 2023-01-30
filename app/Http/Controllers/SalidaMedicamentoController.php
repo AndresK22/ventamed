@@ -384,4 +384,52 @@ class SalidaMedicamentoController extends Controller
             return $e->getMessage();
         }
     }
+
+    public function imp2(SalidaMedicamento $salida)
+    {
+        try{
+            $detalles = DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get();
+
+            //Imprimir ticket
+            $connector = new WindowsPrintConnector("POS-58");
+            $printer = new Printer($connector);
+            //Encabezado
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Venta de medicina popular\n");
+            $printer->text("'Don Evelio'\n");
+            $printer->text("Col. 10 de Mayo, final Calle\n");
+            $printer->text("Central, Mejicanos\n");
+            $printer->text("Telefono: 6933-3429\n");
+            $printer->text($salida->fechaSalida . " " . $salida->horaSalida . "\n");
+            $printer->feed(2);
+            //Encabezado "tabla"
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("CANT      P.U.      SUB.\n");
+            $printer->feed(1);
+            //Productos
+            foreach ($detalles as $detalle) {
+                $medicamento = Medicamento::find($detalle->medicamento_id);
+
+                $printer->text($medicamento->nombreMedicamento . "\n");
+                $printer->text(" " . $detalle->cantidadSalida . "      $" . $detalle->precioSalida . "     $" . $detalle->subSalida . "\n");
+            }
+            //Total
+            $printer->feed(1);
+            $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->text("TOTAL: $" . number_format($salida->montoSalida, 2) . "\n");
+            //Pie de pagina
+            $printer->feed(2);
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Gracias por su compra");
+            //Final
+            $printer->feed(5);
+            $printer->cut();
+            //$printer->pulse();
+            $printer->close();
+
+            return redirect()->route('ventaDiaria.index');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
 }

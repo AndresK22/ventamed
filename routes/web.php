@@ -32,7 +32,7 @@ Route::post('login', [AutController::class,'login'])->name('login.login')->middl
 Route::post('logout', [AutController::class,'logout'])->name('logout')->middleware('auth');
 
 //Vista inicial dashboard
-Route::view('dashboard', 'dashboard')->name('dashboard')->middleware('auth');
+Route::get('dashboard', [AutController::class,'dashboard'])->name('dashboard')->middleware('auth');
 
 //------------------------------------Usuarios-------------------------------------
 Route::group(['middleware' => ['role:administrador']], function () {
@@ -133,3 +133,4 @@ Route::get('detaSal/destroy2/{salida}/{detalle}', [DetalleSalidaController::clas
 //------------------------------------VentaDiaria-------------------------------
 Route::get('ventaDiaria', [SalidaMedicamentoController::class, 'ventaDiaria'])->name('ventaDiaria.index')->middleware('auth');
 Route::get('ventaDiaria/show/{salida}', [SalidaMedicamentoController::class, 'show2'])->name('ventaDiaria.show')->middleware('auth');
+Route::get('salida/imp2/{salida}', [SalidaMedicamentoController::class,'imp2'])->name('ventaDiaria.imp')->middleware('auth');

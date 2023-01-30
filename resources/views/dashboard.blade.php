@@ -16,12 +16,6 @@
 
 <div class="row">
     <div class="col s12 center-align">
-        <h3>Dashboard</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col s12 center-align">
         <div class="card">
             <div class="card-content">
                 @if ($salidas)

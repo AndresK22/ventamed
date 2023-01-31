@@ -51,7 +51,7 @@
                 @php
                     $total = 0;
                     foreach ($detalles as $detalle) {
-                        $total += $detalle->subEntrada;
+                        $total += $detalle->precioEntrada;
                     }
                 @endphp
 
@@ -96,7 +96,6 @@
                     <th>Medicamento</th>
                     <th>Cantidad</th>
                     <th>Costo</th>
-                    <th>Subtotal</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -113,7 +112,6 @@
                             <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
                             <td>{{ $detalle->cantidadEntrada }}</td>
                             <td>${{ $detalle->precioEntrada }}</td>
-                            <td>${{ $detalle->subEntrada }}</td>
                             <td>
                                 <button data-target="modalEditDetEnt" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadEntrada }}, {{ $detalle->precioEntrada }})"><i class="material-icons">edit</i></button>
                                 <button data-target="modalDeleteDetalleEn" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetEn({{ $entrada->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>

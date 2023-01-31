@@ -58,39 +58,66 @@
 <div class="row">
     <div class="col s12">
         <table class="striped highlight responsive-table centered">
-            <thead class="amber lighten-2">
-                <tr>
-                    <th>Corr.</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Monto de la salida</th>
-                    <th>Accion</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @php
-                    $i = 1;
-                @endphp
-
-                @foreach ($salidas as $salida)
+            @php
+                $i = 1;
+                $j = 0;
+            @endphp
+            
+            @foreach ($salidas as $salida)
+                <thead class="amber lighten-2">
+                    <tr>
+                        <th>Corr.</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Monto de la salida</th>
+                        <th>Accion</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
                     <tr>
                         <td>{{ $i }}</td>
                         <td>{{ date("d/m/Y", strtotime($salida->fechaSalida)) }}</td>
                         <td>{{ date("H:i", strtotime($salida->horaSalida)) }}</td>
                         <td>${{ $salida->montoSalida }}</td>
                         <td>
-                            <a href="{{ route('ventaDiaria.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a>
+                            <!-- <a href="{{ route('ventaDiaria.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a> -->
                             <a href="{{ route('ventaDiaria.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">print</i></a>
                         </td>
                     </tr>
+                </tbody>
 
-                    @php
-                        $i++;
-                    @endphp
+                <tr>
+                    <thead class="red lighten-3">
+                        <tr>
+                            <th class="white"></th>
+                            <th>Medicamento</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
 
-                @endforeach
-            </tbody>
+                    <tbody>
+                        @foreach ($detalles[$j] as $detalle)
+                            <tr>
+                                <td></td>
+                                <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
+                                <td>{{ $detalle->cantidadSalida }}</td>
+                                <td>${{ $detalle->precioSalida }}</td>
+                                <td>${{ $detalle->subSalida }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </tr>
+
+                @php
+                    $i++;
+                    $j++;
+                @endphp
+
+            @endforeach
+
         </table>
     </div>
 </div>

@@ -39,7 +39,7 @@
             @php
                 $total = 0;
                 foreach ($detalles as $detalle) {
-                    $total += $detalle->subEntrada;
+                    $total += $detalle->precioEntrada;
                 }
             @endphp
 
@@ -65,7 +65,6 @@
                     <th>Medicamento</th>
                     <th>Cantidad</th>
                     <th>Costo</th>
-                    <th>Subtotal</th>
                 </tr>
             </thead>
 
@@ -81,7 +80,6 @@
                             <td>{{ $detalle->medicamento->nombreMedicamento }}</td>
                             <td>{{ $detalle->cantidadEntrada }}</td>
                             <td>${{ $detalle->precioEntrada }}</td>
-                            <td>${{ $detalle->subEntrada }}</td>
                         </tr>
 
                         @php

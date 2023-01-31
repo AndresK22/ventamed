@@ -26,7 +26,6 @@ class DetalleEntradaController extends Controller
             $detalleEntrada->medicamento_id = $request->medicamento_id;
             $detalleEntrada->cantidadEntrada = $request->cantidadEntrada;
             $detalleEntrada->precioEntrada = $request->precioEntrada;
-            $detalleEntrada->subEntrada = $request->precioEntrada * $request->cantidadEntrada;
             $detalleEntrada->save();
 
             $entrada = EntradaMedicamento::find($request->entrada_id);
@@ -45,7 +44,6 @@ class DetalleEntradaController extends Controller
             $detalleEntrada->medicamento_id = $request->medicamento_id;
             $detalleEntrada->cantidadEntrada = $request->cantidadEntrada;
             $detalleEntrada->precioEntrada = $request->precioEntrada;
-            $detalleEntrada->subEntrada = $request->precioEntrada * $request->cantidadEntrada;
             $detalleEntrada->save();
 
             $entrada = EntradaMedicamento::find($request->entrada_id);
@@ -70,7 +68,6 @@ class DetalleEntradaController extends Controller
             $detalleEnt = DetalleEntrada::find($idDetEnt);
             $detalleEnt->cantidadEntrada = $request->cantidadEntradaEdit;
             $detalleEnt->precioEntrada = $request->precioEntradaEdit;
-            $detalleEnt->subEntrada = $request->precioEntradaEdit * $request->cantidadEntradaEdit;
             $detalleEnt->save();
 
             return redirect()->route('entrada.create2', $entrada);
@@ -85,7 +82,6 @@ class DetalleEntradaController extends Controller
             $detalleEnt = DetalleEntrada::find($idDetEnt);
             $detalleEnt->cantidadEntrada = $request->cantidadEntradaEdit;
             $detalleEnt->precioEntrada = $request->precioEntradaEdit;
-            $detalleEnt->subEntrada = $request->precioEntradaEdit * $request->cantidadEntradaEdit;
             $detalleEnt->save();
 
             return redirect()->route('entrada.update2', $entrada);

@@ -8,6 +8,7 @@ use App\Models\SalidaMedicamento;
 use App\Models\DetalleSalida;
 use App\Models\Medicamento;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 
 require __DIR__ . '../../../../vendor/autoload.php';
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -55,6 +56,11 @@ class SalidaMedicamentoController extends Controller
                 ->fechaSalida1($fecha1)
                 ->get();
 
+                $detalles = array();
+                foreach ($salidas as $salida) {
+                    array_push($detalles, DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get());
+                }
+
                 $fechaTit = $fecha1;
             }else{
                 $salidas = SalidaMedicamento::where('fechaSalida', '=', date("Y-m-d"))
@@ -62,10 +68,15 @@ class SalidaMedicamentoController extends Controller
                 ->orderBy('horaSalida', 'desc')
                 ->get();
 
+                $detalles = array();
+                foreach ($salidas as $salida) {
+                    array_push($detalles, DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get());
+                }
+
                 $fechaTit = date("Y-m-d");
             }
 
-            return view('salida.ventaDiaria', compact('salidas', 'fechaTit'));
+            return view('salida.ventaDiaria', compact('salidas', 'fechaTit', 'detalles'));
         }catch(Exception $e){
             return $e->getMessage();
         }

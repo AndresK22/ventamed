@@ -8,6 +8,7 @@ use App\Http\Controllers\EntradaMedicamentoController;
 use App\Http\Controllers\DetalleEntradaController;
 use App\Http\Controllers\SalidaMedicamentoController;
 use App\Http\Controllers\DetalleSalidaController;
+use App\Http\Controllers\ControlMensualController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,3 +135,6 @@ Route::get('detaSal/destroy2/{salida}/{detalle}', [DetalleSalidaController::clas
 Route::get('ventaDiaria', [SalidaMedicamentoController::class, 'ventaDiaria'])->name('ventaDiaria.index')->middleware('auth');
 Route::get('ventaDiaria/show/{salida}', [SalidaMedicamentoController::class, 'show2'])->name('ventaDiaria.show')->middleware('auth');
 Route::get('salida/imp2/{salida}', [SalidaMedicamentoController::class,'imp2'])->name('ventaDiaria.imp')->middleware('auth');
+
+//------------------------------------VentaMensual-------------------------------
+Route::get('controlMensual', [ControlMensualController::class, 'index'])->name('controlMensual.index')->middleware('auth');;

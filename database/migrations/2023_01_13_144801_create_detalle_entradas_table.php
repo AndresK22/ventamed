@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('detalle_entradas', function (Blueprint $table) {
             $table->id();
             //$table->foreignId('entrada_medicamento_id')->constrained();
-            $table->foreignIdFor(EntradaMedicamento::class)->references('id')->on('entrada_medicamentos');
+            $table->foreignIdFor(EntradaMedicamento::class)->references('id')->on('entrada_medicamentos')->onDelete('cascade');
             //$table->foreignId('medicamento_id')->constrained();
             $table->foreignIdFor(Medicamento::class)->references('id')->on('medicamentos');
             $table->integer('cantidadEntrada');

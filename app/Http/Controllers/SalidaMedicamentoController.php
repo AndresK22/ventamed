@@ -27,6 +27,15 @@ class SalidaMedicamentoController extends Controller
             $fecha1 = $request->busquedaSalida1;
             $fecha2 = $request->busquedaSalida2;
 
+            //Borrar los vacios
+            $aux = SalidaMedicamento::where('fechaSalida', null)
+            ->where('montoSalida', 0.00)
+            ->get();
+            foreach ($aux as $val) {
+                $val->forceDelete();
+            }
+
+            //Mostrar las salidas
             if($fecha2 != null){
                 $salidas = SalidaMedicamento::orderBy('fechaSalida', 'desc')
                 ->orderBy('horaSalida', 'desc')
@@ -162,11 +171,13 @@ class SalidaMedicamentoController extends Controller
             $printer->text("Col. 10 de Mayo, final Calle\n");
             $printer->text("Central, Mejicanos\n");
             $printer->text("Telefono: 6933-3429\n");
-            $printer->text($fecha . " " . $hora . "\n");
-            $printer->feed(2);
+            $printer->text(date("d/m/Y", strtotime($fecha)) . " " . $hora . "\n");
+            $printer->feed(1);
             //Encabezado "tabla"
             $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("--------------------------------\n");
             $printer->text("CANT      P.U.      SUB.\n");
+            $printer->text("--------------------------------\n");
             $printer->feed(1);
             //Productos
             foreach ($detalles as $detalle) {
@@ -176,9 +187,11 @@ class SalidaMedicamentoController extends Controller
                 $printer->text(" " . $detalle['cantidadSalida'] . "      $" . $detalle['precioSalida'] . "     $" . $detalle['subSalida'] . "\n");
             }
             //Total
-            $printer->feed(1);
+            $printer->text("--------------------------------\n");
             $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->setTextSize(2, 2);
             $printer->text("TOTAL: $" . number_format($request->montoSalida, 2) . "\n");
+            $printer->setTextSize(1, 1);
             //Pie de pagina
             $printer->feed(2);
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -363,11 +376,13 @@ class SalidaMedicamentoController extends Controller
             $printer->text("Col. 10 de Mayo, final Calle\n");
             $printer->text("Central, Mejicanos\n");
             $printer->text("Telefono: 6933-3429\n");
-            $printer->text($salida->fechaSalida . " " . $salida->horaSalida . "\n");
-            $printer->feed(2);
+            $printer->text(date("d/m/Y", strtotime($salida->fechaSalidaa)) . " " . $salida->horaSalida . "\n");
+            $printer->feed(1);
             //Encabezado "tabla"
             $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("--------------------------------\n");
             $printer->text("CANT      P.U.      SUB.\n");
+            $printer->text("--------------------------------\n");
             $printer->feed(1);
             //Productos
             foreach ($detalles as $detalle) {
@@ -377,9 +392,11 @@ class SalidaMedicamentoController extends Controller
                 $printer->text(" " . $detalle->cantidadSalida . "      $" . $detalle->precioSalida . "     $" . $detalle->subSalida . "\n");
             }
             //Total
-            $printer->feed(1);
+            $printer->text("--------------------------------\n");
             $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->setTextSize(2, 2);
             $printer->text("TOTAL: $" . number_format($salida->montoSalida, 2) . "\n");
+            $printer->setTextSize(1, 1);
             //Pie de pagina
             $printer->feed(2);
             $printer->setJustification(Printer::JUSTIFY_CENTER);
@@ -411,12 +428,13 @@ class SalidaMedicamentoController extends Controller
             $printer->text("Col. 10 de Mayo, final Calle\n");
             $printer->text("Central, Mejicanos\n");
             $printer->text("Telefono: 6933-3429\n");
-            $printer->text($salida->fechaSalida . " " . $salida->horaSalida . "\n");
-            $printer->feed(2);
+            $printer->text(date("d/m/Y", strtotime($salida->fechaSalidaa)) . " " . $salida->horaSalida . "\n");
+            $printer->feed(1);
             //Encabezado "tabla"
             $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("--------------------------------\n");
             $printer->text("CANT      P.U.      SUB.\n");
-            $printer->feed(1);
+            $printer->text("--------------------------------\n");
             //Productos
             foreach ($detalles as $detalle) {
                 $medicamento = Medicamento::find($detalle->medicamento_id);
@@ -425,9 +443,11 @@ class SalidaMedicamentoController extends Controller
                 $printer->text(" " . $detalle->cantidadSalida . "      $" . $detalle->precioSalida . "     $" . $detalle->subSalida . "\n");
             }
             //Total
-            $printer->feed(1);
+            $printer->text("--------------------------------\n");
             $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->setTextSize(2, 2);
             $printer->text("TOTAL: $" . number_format($salida->montoSalida, 2) . "\n");
+            $printer->setTextSize(1, 1);
             //Pie de pagina
             $printer->feed(2);
             $printer->setJustification(Printer::JUSTIFY_CENTER);

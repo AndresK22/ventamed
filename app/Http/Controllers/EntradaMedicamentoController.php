@@ -24,6 +24,15 @@ class EntradaMedicamentoController extends Controller
             $fecha1 = $request->busquedaEntrada1;
             $fecha2 = $request->busquedaEntrada2;
 
+            //Borrar los vacios
+            $aux = EntradaMedicamento::where('fechaEntrada', null)
+            ->where('montoEntrada', 0.00)
+            ->get();
+            foreach ($aux as $val) {
+                $val->forceDelete();
+            }
+
+            //Mostrar las entradas
             if($fecha2 != null){
                 $entradas = EntradaMedicamento::orderBy('fechaEntrada', 'desc')
                 ->fechaEntrada2($fecha1, $fecha2)

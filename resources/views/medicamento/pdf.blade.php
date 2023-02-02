@@ -30,7 +30,7 @@
     <main>
         <div class="row">
             <div class="col s12">
-                <table class="striped highlight centered">
+                <table class="centered">
                     <thead class="amber lighten-2">
                         <tr>
                             <th>Corr.</th>

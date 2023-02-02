@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <h3>Usuarios</h3>
@@ -22,7 +33,7 @@
 
 <div class="row">
     <div class="col s12 right-align">
-        <a href="{{ route('user.create') }}" class="waves-effect waves-light btn amber darken-2">Crear usuario</a>
+        <a href="{{ route('user.create') }}" class="waves-effect waves-light btn amber darken-3">Crear usuario</a>
     </div>
 </div>
 
@@ -53,10 +64,10 @@
                         <td>{{ $usuario->email }}</td>
                         <td>{{ $usuario->rol }}</td>
                         <td>
-                            <a href="{{ route('user.edit', $usuario->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
+                            <a href="{{ route('user.edit', $usuario->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a>
                             @if ($usuariosaux[$i] != true)
-                                <!-- <a href="{{ route('user.destroy', [$usuario->id, $usuario->rolId]) }}" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a> -->
-                                <a id="btnDeleteUser" href="#modalDeleteUser" class="waves-effect waves-light btn modal-trigger amber darken-2"><i class="material-icons">delete</i></a>
+                                <!-- <a href="{{ route('user.destroy', [$usuario->id, $usuario->rolId]) }}" class="waves-effect waves-light btn modal-trigger amber darken-3"><i class="material-icons">delete</i></a> -->
+                                <a id="btnDeleteUser" href="#modalDeleteUser" class="waves-effect waves-light btn modal-trigger amber darken-3"><i class="material-icons">delete</i></a>
                             @endif
                         </td>
                     </tr>

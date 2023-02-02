@@ -137,4 +137,11 @@ Route::get('ventaDiaria/show/{salida}', [SalidaMedicamentoController::class, 'sh
 Route::get('salida/imp2/{salida}', [SalidaMedicamentoController::class,'imp2'])->name('ventaDiaria.imp')->middleware('auth');
 
 //------------------------------------VentaMensual-------------------------------
-Route::get('controlMensual', [ControlMensualController::class, 'index'])->name('controlMensual.index')->middleware('auth');;
+Route::group(['middleware' => ['role:administrador|gerente']], function () {
+    //Inicio
+    Route::get('controlMensual', [ControlMensualController::class, 'index'])->name('controlMensual.index')->middleware('auth');
+    //Movimientos de productos
+    Route::get('controlMensual/movProd', [ControlMensualController::class,'movProd'])->name('controlMensual.movProd')->middleware('auth');
+    //Movimientos de productos por fecha
+    Route::get('controlMensual/movProdFech', [ControlMensualController::class,'movProdFech'])->name('controlMensual.movProdFech')->middleware('auth');
+});

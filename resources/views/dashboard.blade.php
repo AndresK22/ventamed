@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <div class="card">

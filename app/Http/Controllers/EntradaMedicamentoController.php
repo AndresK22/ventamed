@@ -253,7 +253,7 @@ class EntradaMedicamentoController extends Controller
             }
 
             $entrada->delete();
-            return redirect()->route('entrada.index')->with('status','Ha salido de la entrada de medicamentos');
+            return redirect()->route('entrada.index')->with('alert','Ha salido de la entrada de medicamentos');
         }catch(Exception $e){
             return $e->getMessage();
         }

@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <h3>Medicamentos</h3>
@@ -22,10 +33,10 @@
 
 <div class="row">
     <div class="col s6 left-align">
-        <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-2">Crear medicamento</a>
+        <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-3">Crear medicamento</a>
     </div>
     <div class="col s6 right-align">
-        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-2" target="_blank" rel="noopener noreferrer">Imprimir listado</a>
+        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-3" target="_blank" rel="noopener noreferrer">Imprimir listado</a>
     </div>
 </div>
 
@@ -57,7 +68,7 @@
             </div>
             
             <div class="input-field col s2 right-align">
-                <button id="buscarMed" class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+                <button id="buscarMed" class="btn waves-effect waves-light amber darken-3" type="submit" name="action">Buscar</button>
             </div>
         </div>
     </form>
@@ -88,9 +99,9 @@
                         <td>{{ $medicamento->cantidadMedicamento }}</td>
                         <td>${{ $medicamento->precioUnitario }}</td>
                         <td>
-                            <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a>
+                            <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a>
                             @role('administrador')
-                                <button data-target="modalDeleteMedicamento" class="btn modal-trigger waves-effect waves-light amber darken-2" onclick="borrarMed({{ $medicamento->id }}, '{{ $medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
+                                <button data-target="modalDeleteMedicamento" class="btn modal-trigger waves-effect waves-light amber darken-3" onclick="borrarMed({{ $medicamento->id }}, '{{ $medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             @endrole
                         </td>
                     </tr>

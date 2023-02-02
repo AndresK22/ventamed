@@ -25,7 +25,7 @@ class DetalleSalidaController extends Controller
 
             if($medicamento->cantidadMedicamento < $request->cantidadSalida){
                 $salida = SalidaMedicamento::find($request->salida_id);
-                return redirect()->route('salida.create2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                return redirect()->route('salida.create2', $salida)->with('alert','La cantidad a vender excede la cantidad disponible');
                 
             }else{
                 $detalleSalida = new DetalleSalida();
@@ -52,7 +52,7 @@ class DetalleSalidaController extends Controller
 
             if($medicamento->cantidadMedicamento < $request->cantidadSalida){
                 $salida = SalidaMedicamento::find($request->salida_id);
-                return redirect()->route('salida.edit2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                return redirect()->route('salida.edit2', $salida)->with('alert','La cantidad a vender excede la cantidad disponible');
                 
             }else{
                 $detalleSalida = new DetalleSalida();
@@ -85,7 +85,7 @@ class DetalleSalidaController extends Controller
             $medicamento = Medicamento::find($request->medicamentoIdEdit);
 
             if($medicamento->cantidadMedicamento < $request->cantidadSalidaEdit){
-                return redirect()->route('salida.create2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                return redirect()->route('salida.create2', $salida)->with('alert','La cantidad a vender excede la cantidad disponible');
                 
             }else{
                 $detalleSal = DetalleSalida::find($idDetSal);
@@ -106,7 +106,7 @@ class DetalleSalidaController extends Controller
             $medicamento = Medicamento::find($request->medicamentoIdEdit);
 
             if($medicamento->cantidadMedicamento < $request->cantidadSalidaEdit){
-                return redirect()->route('salida.edit2', $salida)->with('status','La cantidad a vender excede la cantidad disponible');
+                return redirect()->route('salida.edit2', $salida)->with('alert','La cantidad a vender excede la cantidad disponible');
                 
             }else{
                 $detalleSal = DetalleSalida::find($idDetSal);

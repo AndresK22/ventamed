@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <h3>Salida de medicamentos</h3>
@@ -22,7 +33,7 @@
 
 <div class="row">
     <div class="col s12 left-align">
-        <a href="{{ route('salida.create') }}" class="waves-effect waves-light btn-large amber darken-2">Ingresar salida de medicamento</a>
+        <a href="{{ route('salida.create') }}" class="waves-effect waves-light btn-large amber darken-3">Ingresar salida de medicamento</a>
     </div>
 </div>
 
@@ -54,7 +65,7 @@
             </div>
 
             <div class="input-field col s2 right-align">
-                <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+                <button class="btn waves-effect waves-light amber darken-3" type="submit" name="action">Buscar</button>
             </div>
         </div>
     </form>
@@ -85,11 +96,11 @@
                         <td>{{ date("H:i", strtotime($salida->horaSalida)) }}</td>
                         <td>${{ $salida->montoSalida }}</td>
                         <td>
-                            <a href="{{ route('salida.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a>
-                            <a href="{{ route('salida.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">print</i></a>
-                            <!-- <a href="{{ route('salida.edit', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">edit</i></a> -->
+                            <a href="{{ route('salida.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">remove_red_eye</i></a>
+                            <a href="{{ route('salida.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">print</i></a>
+                            <!-- <a href="{{ route('salida.edit', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a> -->
                             @role('administrador')
-                                <button data-target="modalDeleteSalida" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarSal({{ $salida->id }}, '{{ $salida->fechaSalida }}')"><i class="material-icons">delete</i></button>
+                                <button data-target="modalDeleteSalida" class="waves-effect waves-light btn modal-trigger amber darken-3" onclick="borrarSal({{ $salida->id }}, '{{ $salida->fechaSalida }}')"><i class="material-icons">delete</i></button>
                             @endrole
                         </td>
                     </tr>

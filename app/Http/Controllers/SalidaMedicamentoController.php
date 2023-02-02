@@ -355,7 +355,7 @@ class SalidaMedicamentoController extends Controller
             }
 
             $salida->delete();
-            return redirect()->route('salida.index')->with('status','Ha salido de la venta de medicamentos');
+            return redirect()->route('salida.index')->with('alert','Ha salido de la venta de medicamentos');
         }catch(Exception $e){
             return $e->getMessage();
         }

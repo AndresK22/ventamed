@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <h3>Venta del dia {{ date("d/m/Y", strtotime($fechaTit)) }}</h3>
@@ -36,7 +47,7 @@
                 @endif
             </div>
             <div class="input-field col s2 right-align">
-                <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Buscar</button>
+                <button class="btn waves-effect waves-light amber darken-3" type="submit" name="action">Buscar</button>
             </div>
         </div>
     </form>
@@ -81,14 +92,14 @@
                         <td>{{ date("H:i", strtotime($salida->horaSalida)) }}</td>
                         <td>${{ $salida->montoSalida }}</td>
                         <td>
-                            <!-- <a href="{{ route('ventaDiaria.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">remove_red_eye</i></a> -->
-                            <a href="{{ route('ventaDiaria.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-2"><i class="material-icons">print</i></a>
+                            <!-- <a href="{{ route('ventaDiaria.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">remove_red_eye</i></a> -->
+                            <a href="{{ route('ventaDiaria.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">print</i></a>
                         </td>
                     </tr>
                 </tbody>
 
                 <tr>
-                    <thead class="red lighten-3">
+                    <thead class="indigo lighten-2">
                         <tr>
                             <th class="white"></th>
                             <th>Medicamento</th>

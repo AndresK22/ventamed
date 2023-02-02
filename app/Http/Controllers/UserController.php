@@ -151,7 +151,7 @@ class UserController extends Controller
             $user->removeRole($rol);
             $user->delete();
 
-            return redirect()->route('user.index')->with('status', 'Usuario eliiminado con exito');
+            return redirect()->route('user.index')->with('status', 'Usuario eliminado con exito');
         }catch(Exception $e){
             return $e->getMessage();
         }

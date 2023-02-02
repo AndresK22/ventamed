@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row white-text">
     <p>.</p>
 </div>
@@ -68,7 +79,7 @@
             @endif
             
             <div class="input-field right-align col s4">
-                <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">Guardar salida</button>
+                <button class="btn-large waves-effect waves-light amber darken-3" type="submit" name="action">Guardar salida</button>
             </div>
             
         </form>
@@ -107,8 +118,8 @@
                             <td>${{ $detalle->precioSalida }}</td>
                             <td>${{ $detalle->subSalida }}</td>
                             <td>
-                                <button data-target="modalEditDetSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="editarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadSalida }}, {{ $detalle->precioSalida }}, {{ $detalle->medicamento_id }})"><i class="material-icons">edit</i></button>
-                                <button data-target="modalDeleteDetalleSal" class="waves-effect waves-light btn modal-trigger amber darken-2" onclick="borrarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
+                                <button data-target="modalEditDetSal" class="waves-effect waves-light btn modal-trigger amber darken-3" onclick="editarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}', {{ $detalle->cantidadSalida }}, {{ $detalle->precioSalida }}, {{ $detalle->medicamento_id }})"><i class="material-icons">edit</i></button>
+                                <button data-target="modalDeleteDetalleSal" class="waves-effect waves-light btn modal-trigger amber darken-3" onclick="borrarDetSal({{ $salida->id }}, {{ $detalle->id }}, '{{ $detalle->medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             </td>
                         </tr>
 
@@ -179,7 +190,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12 center-align">
-                            <button class="btn-large waves-effect waves-light amber darken-2" type="submit" name="action">A&ntilde;adir</button>
+                            <button class="btn-large waves-effect waves-light amber darken-3" type="submit" name="action">A&ntilde;adir</button>
                         </div>
                     </div>
                     <div class="input-field col s12">

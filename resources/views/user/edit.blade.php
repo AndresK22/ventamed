@@ -14,6 +14,17 @@
 </div>
 @endif
 
+@if (session('alert'))
+<div class="row">
+    <div class="col s12">
+        <div class="card red darken-4">
+        <div class="card-content white-text">
+            <p>{{ session('alert') }}</p>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col s12 center-align">
         <h3>Actualizar usuario</h3>
@@ -62,7 +73,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12 center-align">
-                <button class="btn waves-effect waves-light btn-large amber darken-2" type="submit" name="action">Actualizar
+                <button class="btn waves-effect waves-light btn-large amber darken-3" type="submit" name="action">Actualizar
                 </button>
             </div>
         </div>

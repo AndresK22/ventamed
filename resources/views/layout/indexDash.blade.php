@@ -42,7 +42,7 @@
                     <li class="{{ request()->routeIs('ventaDiaria.*') ? 'active': '' }}"><a href="{{ route('ventaDiaria.index') }}">Venta diaria</a></li>
                     
                     @hasanyrole('administrador')
-                        <li class="{{ request()->routeIs('controlMensual.*') ? 'active': '' }}"><a href={{ route('controlMensual.index') }}>Control mensual</a></li>
+                        <li class="{{ request()->routeIs('controlMensual.*') ? 'active': '' }}"><a href={{ route('controlMensual.index') }}>Reportes</a></li>
                     @endhasanyrole
 
                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -69,7 +69,7 @@
         <li class="{{ request()->routeIs('ventaDiaria.*') ? 'active': '' }}"><a href="{{ route('ventaDiaria.index') }}">Venta diaria</a></li>
         
         @hasanyrole('administrador')
-            <li class="{{ request()->routeIs('controlMensual.*') ? 'active': '' }}"><a href={{ route('controlMensual.index') }}>Control mensual</a></li>
+            <li class="{{ request()->routeIs('controlMensual.*') ? 'active': '' }}"><a href={{ route('controlMensual.index') }}>Reportes</a></li>
         @endhasanyrole
 
         <li><div class="divider"></div></li>

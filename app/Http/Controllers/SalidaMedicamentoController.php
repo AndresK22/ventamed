@@ -290,6 +290,7 @@ class SalidaMedicamentoController extends Controller
             $detallesOrig = session('detallesOrig');
 
             $cont = count($detallesOrig);
+            //dd($detallesOrig);
             
             for ($i=0; $i < $cont; $i++) { 
 
@@ -305,12 +306,12 @@ class SalidaMedicamentoController extends Controller
                         }else if($detallesOrig[$i]['cantidadSalida'] < $detalle['cantidadSalida']){
                             $diferencia = $detalle['cantidadSalida'] - $detallesOrig[$i]['cantidadSalida'];
                             $medicamento->cantidadMedicamento = $medicamento->cantidadMedicamento - $diferencia;
-        
+
                         }
-                    }else{
+                    }/*else{
                         $medicamento->cantidadMedicamento = $medicamento->cantidadMedicamento - $detalle['cantidadSalida'];
                         $medicamento->save();
-                    }
+                    }*/
                     
                     $medicamento->save();
                 }

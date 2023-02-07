@@ -98,7 +98,10 @@
                         <td>
                             <a href="{{ route('salida.show', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">remove_red_eye</i></a>
                             <a href="{{ route('salida.imp', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">print</i></a>
-                            <!-- <a href="{{ route('salida.edit', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a> -->
+                            @role('administrador')
+                                <a href="{{ route('salida.edit', $salida->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a>
+                            @endrole
+                            
                             @role('administrador')
                                 <button data-target="modalDeleteSalida" class="waves-effect waves-light btn modal-trigger amber darken-3" onclick="borrarSal({{ $salida->id }}, '{{ $salida->fechaSalida }}')"><i class="material-icons">delete</i></button>
                             @endrole

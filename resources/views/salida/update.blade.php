@@ -48,16 +48,8 @@
                         $total += $detalle->subSalida;
                     }
                 @endphp
-
-                <div class="input-field col s4">
-                    <i class="material-icons prefix">attach_money</i>
-                    <input id="montoSalid" name="montoSalid" type="text" value="${{ number_format($total, 2) }}" class="validate" disabled required>
-                    <label for="montoSalid">Total</label>
-                    @if ($errors->has('montoSalid'))
-                        @error('montoSalid')
-                            <span class="helper-text">{{ $message }}</span>
-                        @enderror    
-                    @endif
+                <div class="col s4">
+                    <p class="flow-text">Total: <span>${{ number_format($total, 2) }}</span> </p>
                 </div>
                 <input id="montoSalida" name="montoSalida" type="number" min="0.01" max="999.99" step="0.01" value="{{ $total }}" class="validate" hidden required>
             @endif
@@ -90,7 +82,7 @@
 </div>
 
 <div class="row">
-    <div class="col s8">
+    <div class="col s12">
         <table class="striped highlight responsive-table centered">
             <thead class="amber lighten-2">
                 <tr>
@@ -130,74 +122,6 @@
                 @endif
             </tbody>
         </table>
-    </div>
-
-    <div class="col s4">
-        <div class="card">
-            <div class="card-content">
-                <form id="formDeta" action="{{ route('detaSal.store2') }}" method="POST">
-                    @csrf
-                    <div class="input-field col s12">
-                        <input id="medicamento_id" name="medicamento_id" type="text" value="{{ old('medicamento_id') }}" class="validate" hidden required>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">featured_play_list</i>
-                            <input id="codBarras" name="codBarras" type="text" maxlength="25" class="validate" autofocus required>
-                            <label for="codBarras">C&oacute;digo de barras</label>
-                            @if ($errors->has('codBarras'))
-                                @error('codBarras')
-                                    <span class="helper-text">{{ $message }}</span>
-                                @enderror
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">description</i>
-                            <input id="nombreMedicamento" name="nombreMedicamento" type="text" maxlength="255" class="validate" disabled required>
-                            @if ($errors->has('nombreMedicamento'))
-                                @error('nombreMedicamento')
-                                    <span class="helper-text">{{ $message }}</span>
-                                @enderror    
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">monetization_on</i>
-                            <input id="precioSal" name="precioSal" type="number" min="0.01" max="999.99" step="0.01" class="validate" disabled required>
-                            <input id="precioSalida" name="precioSalida" type="number" min="0.01" max="999.99" step="0.01" class="validate" hidden required>
-                            @if ($errors->has('precioSalida'))
-                                @error('precioSalida')
-                                    <span class="helper-text">{{ $message }}</span>
-                                @enderror    
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <i class="material-icons prefix">trending_up</i>
-                            <input id="cantidadSalida" name="cantidadSalida" type="number" min="0" step="1" class="validate" required>
-                            <label for="cantidadSalida">Cantidad</label>
-                            @if ($errors->has('cantidadSalida'))
-                                @error('cantidadSalida')
-                                    <span class="helper-text">{{ $message }}</span>
-                                @enderror    
-                            @endif
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12 center-align">
-                            <button class="btn-large waves-effect waves-light amber darken-3" type="submit" name="action">A&ntilde;adir</button>
-                        </div>
-                    </div>
-                    <div class="input-field col s12">
-                        <input id="salida_id" name="salida_id" type="text" value="{{ $salida->id }}" class="validate" hidden required>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 
 </div>

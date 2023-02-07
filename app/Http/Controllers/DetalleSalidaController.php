@@ -150,7 +150,7 @@ class DetalleSalidaController extends Controller
             foreach ($detallesOrig as $detalle) {
 
                 if($detalleSal->id == $detalle->id){
-                    $detallesOrig->pull($i);
+                    //$detallesOrig->pull($i);
 
                     $medicamento = Medicamento::find($detalle->medicamento_id);
                     $medicamento->cantidadMedicamento = $medicamento->cantidadMedicamento + $detalle->cantidadSalida;

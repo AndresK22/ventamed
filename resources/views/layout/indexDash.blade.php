@@ -33,10 +33,7 @@
                         <li class="{{ request()->routeIs('user.*') ? 'active': '' }}"><a href="{{ route('user.index') }}">Usuarios</a></li>
                     @endrole
 
-                    @hasanyrole('administrador|gerente')
-                        <li class="{{ request()->routeIs('medicamento.*') ? 'active': '' }}"><a href="{{ route('medicamento.index') }}">Medicamentos</a></li>
-                    @endhasanyrole
-
+                    <li class="{{ request()->routeIs('medicamento.*') ? 'active': '' }}"><a href="{{ route('medicamento.index') }}">Medicamentos</a></li>
                     <li class="{{ request()->routeIs('entrada.*') ? 'active': '' }}"><a href="{{ route('entrada.create') }}">Entrada de medicamentos</a></li>
                     <li class="{{ request()->routeIs('salida.*') ? 'active': '' }}"><a href="{{ route('salida.create') }}">Salida de medicamentos</a></li>
                     <li class="{{ request()->routeIs('ventaDiaria.*') ? 'active': '' }}"><a href="{{ route('ventaDiaria.index') }}">Venta diaria</a></li>

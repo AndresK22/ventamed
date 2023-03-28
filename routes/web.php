@@ -50,7 +50,7 @@ Route::group(['middleware' => ['role:administrador']], function () {
 });
 
 //------------------------------------Medicamentos-------------------------------
-Route::group(['middleware' => ['role:administrador|gerente']], function () {
+Route::group(['middleware' => ['role:administrador|gerente|usuario']], function () {
     //Inicio
     Route::get('medicamento', [MedicamentoController::class, 'index'])->name('medicamento.index')->middleware('auth');
     //Crear

@@ -31,14 +31,17 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col s6 left-align">
-        <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-3">Crear medicamento</a>
+@hasanyrole('administrador|gerente')
+    <div class="row">
+        <div class="col s6 left-align">
+            <a href="{{ route('medicamento.create') }}" class="waves-effect waves-light btn-large amber darken-3">Crear medicamento</a>
+        </div>
+        
+        <div class="col s6 right-align">
+            <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-3" target="_blank" rel="noopener noreferrer">Imprimir listado</a>
+        </div>
     </div>
-    <div class="col s6 right-align">
-        <a href="{{ route('medicamento.pdf') }}" class="waves-effect waves-light btn-large amber darken-3" target="_blank" rel="noopener noreferrer">Imprimir listado</a>
-    </div>
-</div>
+@endhasanyrole
 
 <div class="row">
     <form class="col s12" action="{{ route('medicamento.index') }}" method="GET">
@@ -99,7 +102,10 @@
                         <td>{{ $medicamento->cantidadMedicamento }}</td>
                         <td>${{ $medicamento->precioUnitario }}</td>
                         <td>
-                            <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a>
+                            @hasanyrole('administrador|gerente')
+                                <a href="{{ route('medicamento.edit', $medicamento->id) }}" class="waves-effect waves-light btn amber darken-3"><i class="material-icons">edit</i></a>
+                            @endhasanyrole
+                            
                             @role('administrador')
                                 <button data-target="modalDeleteMedicamento" class="btn modal-trigger waves-effect waves-light amber darken-3" onclick="borrarMed({{ $medicamento->id }}, '{{ $medicamento->nombreMedicamento }}')"><i class="material-icons">delete</i></button>
                             @endrole

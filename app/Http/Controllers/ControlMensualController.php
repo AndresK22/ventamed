@@ -84,7 +84,7 @@ class ControlMensualController extends Controller
     }
 
 
-    public function movProdFech(Request $request)
+    /*public function movProdFech(Request $request)
     {
         try{
             $entradas = array();
@@ -153,6 +153,58 @@ class ControlMensualController extends Controller
 
             $pdf = Pdf::setPaper('Letter', 'landscape');
             $pdf->loadView('controlMensual.movProdFech', compact('medicamentos', 'entradas', 'salidas', 'totalCompra', 'totalSalida', 'fecha1', 'fecha2'));
+            return $pdf->stream('Movimientos_Medicamentos_' . date("d/m/Y", strtotime($fecha1)) . '_a_' . date("d/m/Y", strtotime($fecha2)) . '.pdf');
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }*/
+
+    public function movProdFech(Request $request)
+    {
+        try{
+            $salidas = array();
+
+            $medicamentos = Medicamento::orderBy('nombreMedicamento', 'asc')->get();
+
+            $fecha1 = $request->busquedaMov1;
+            $fecha2 = $request->busquedaMov2;
+
+            //Mostrar las salidas
+            if($fecha1 == null){
+                return redirect()->route('controlMensual.index')->with('alert','Debe seleccionar al menos una fecha');
+            }elseif($fecha2 != null){
+                foreach ($medicamentos as $medicamento) {    
+                    array_push($salidas, DB::table('detalle_salidas')
+                    ->rightJoin('medicamentos', 'detalle_salidas.medicamento_id', '=', 'medicamentos.id')
+                    ->join('salida_medicamentos', 'detalle_salidas.salida_medicamento_id', '=', 'salida_medicamentos.id')
+                    ->where('medicamento_id', '=', $medicamento->id)
+                    ->whereBetween('fechaSalida', [$fecha1, $fecha2])
+                    ->get());
+                }
+            }else{
+                foreach ($medicamentos as $medicamento) {
+    
+                    array_push($salidas, DB::table('detalle_salidas')
+                    ->rightJoin('medicamentos', 'detalle_salidas.medicamento_id', '=', 'medicamentos.id')
+                    ->join('salida_medicamentos', 'detalle_salidas.salida_medicamento_id', '=', 'salida_medicamentos.id')
+                    ->where('medicamento_id', '=', $medicamento->id)
+                    ->where('fechaSalida', '=', $fecha1)
+                    ->get());
+                }
+            }
+
+            $totalSalida = 0;
+
+            for ($i=0; $i < sizeof($medicamentos); $i++) { 
+                if ($salidas[$i] != null){
+                    foreach($salidas[$i] as $salida){
+                        $totalSalida += $salida->subSalida;
+                    }
+                }
+            }
+
+            $pdf = Pdf::setPaper('Letter', 'landscape');
+            $pdf->loadView('controlMensual.movProdFech', compact('medicamentos', 'salidas', 'totalSalida', 'fecha1', 'fecha2'));
             return $pdf->stream('Movimientos_Medicamentos_' . date("d/m/Y", strtotime($fecha1)) . '_a_' . date("d/m/Y", strtotime($fecha2)) . '.pdf');
         }catch(Exception $e){
             return $e->getMessage();

@@ -40,6 +40,9 @@
                         <tr>
                             <th>Corr.</th>
                             <th>Producto</th>
+                            <th>Fecha compra</th>
+                            <th>Cantidad comprada</th>
+                            <th>Total compra</th>
                             <th>Fecha venta</th>
                             <th>Cantidad vendida</th>
                             <th>Total venta</th>
@@ -59,10 +62,30 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
+
+                            @foreach ($entradas[$j] as $entrada)
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{ date("d/m/Y", strtotime($entrada->fechaEntrada)) }}</td>
+                                    <td>{{ $entrada->cantidadEntrada }}</td>
+                                    <td>${{ $entrada->precioEntrada }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            @endforeach
+
 
                             @foreach ($salidas[$j] as $salida)
                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td>{{ date("d/m/Y", strtotime($salida->fechaSalida)) }}</td>
@@ -82,6 +105,9 @@
                         <tr>
                             <td></td>
                             <td></td>
+                            <td></td>
+                            <td><p class="flow-text">Total comprado: </p></td>
+                            <td><p class="flow-text">${{ number_format($totalCompra, 2) }}</p></td>
                             <td></td>
                             <td><p class="flow-text">Total vendido: </p></td>
                             <td><p class="flow-text">${{ number_format($totalSalida, 2) }}</p></td>

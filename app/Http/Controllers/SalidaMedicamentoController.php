@@ -338,6 +338,14 @@ class SalidaMedicamentoController extends Controller
     public function destroy(SalidaMedicamento $salida)
     {
         try{
+            $detalles = DetalleSalida::where('salida_medicamento_id', '=', $salida->id)->get();
+            foreach($detalles as $detalle){
+                $medicamento = Medicamento::find($detalle->medicamento_id);
+                $medicamento->cantidadMedicamento = $medicamento->cantidadMedicamento + $detalle->cantidadSalida;
+                $medicamento->save();
+                $detalle->delete();
+            }
+
             $salida->delete();
             return redirect()->route('salida.index')->with('status','Salida eliminada correctamente');
         }catch(Exception $e){
